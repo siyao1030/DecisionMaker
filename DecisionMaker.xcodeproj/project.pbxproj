@@ -22,6 +22,14 @@
 		D126126A18403399002FFB83 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D126124E18403399002FFB83 /* CoreData.framework */; };
 		D126127218403399002FFB83 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D126127018403399002FFB83 /* InfoPlist.strings */; };
 		D126127418403399002FFB83 /* DecisionMakerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D126127318403399002FFB83 /* DecisionMakerTests.m */; };
+		D126127F18403887002FFB83 /* Decision.m in Sources */ = {isa = PBXBuildFile; fileRef = D126127E18403887002FFB83 /* Decision.m */; };
+		D126128218403AB1002FFB83 /* Choice.m in Sources */ = {isa = PBXBuildFile; fileRef = D126128118403AB1002FFB83 /* Choice.m */; };
+		D126128518403FF7002FFB83 /* Factor.m in Sources */ = {isa = PBXBuildFile; fileRef = D126128418403FF7002FFB83 /* Factor.m */; };
+		D12612881840450F002FFB83 /* DecisionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D12612871840450F002FFB83 /* DecisionTableViewController.m */; };
+		D126128C184047B8002FFB83 /* CreateDecisionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D126128A184047B8002FFB83 /* CreateDecisionViewController.m */; };
+		D126128D184047B8002FFB83 /* CreateDecisionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D126128B184047B8002FFB83 /* CreateDecisionViewController.xib */; };
+		D17994FA1840993F00939EFB /* AddProsConsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D17994F81840993F00939EFB /* AddProsConsViewController.m */; };
+		D17994FB1840993F00939EFB /* AddProsConsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D17994F91840993F00939EFB /* AddProsConsViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +61,20 @@
 		D126126F18403399002FFB83 /* DecisionMakerTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DecisionMakerTests-Info.plist"; sourceTree = "<group>"; };
 		D126127118403399002FFB83 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D126127318403399002FFB83 /* DecisionMakerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DecisionMakerTests.m; sourceTree = "<group>"; };
+		D126127D18403887002FFB83 /* Decision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Decision.h; path = Objects/Decision.h; sourceTree = "<group>"; };
+		D126127E18403887002FFB83 /* Decision.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Decision.m; path = Objects/Decision.m; sourceTree = "<group>"; };
+		D126128018403AB1002FFB83 /* Choice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Choice.h; path = Objects/Choice.h; sourceTree = "<group>"; };
+		D126128118403AB1002FFB83 /* Choice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Choice.m; path = Objects/Choice.m; sourceTree = "<group>"; };
+		D126128318403FF7002FFB83 /* Factor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Factor.h; path = Objects/Factor.h; sourceTree = "<group>"; };
+		D126128418403FF7002FFB83 /* Factor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Factor.m; path = Objects/Factor.m; sourceTree = "<group>"; };
+		D12612861840450F002FFB83 /* DecisionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DecisionTableViewController.h; sourceTree = "<group>"; };
+		D12612871840450F002FFB83 /* DecisionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DecisionTableViewController.m; sourceTree = "<group>"; };
+		D1261289184047B8002FFB83 /* CreateDecisionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateDecisionViewController.h; sourceTree = "<group>"; };
+		D126128A184047B8002FFB83 /* CreateDecisionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateDecisionViewController.m; sourceTree = "<group>"; };
+		D126128B184047B8002FFB83 /* CreateDecisionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateDecisionViewController.xib; sourceTree = "<group>"; };
+		D17994F71840993F00939EFB /* AddProsConsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddProsConsViewController.h; sourceTree = "<group>"; };
+		D17994F81840993F00939EFB /* AddProsConsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddProsConsViewController.m; sourceTree = "<group>"; };
+		D17994F91840993F00939EFB /* AddProsConsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddProsConsViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +139,20 @@
 			children = (
 				D126125918403399002FFB83 /* AppDelegate.h */,
 				D126125A18403399002FFB83 /* AppDelegate.m */,
+				D12612861840450F002FFB83 /* DecisionTableViewController.h */,
+				D12612871840450F002FFB83 /* DecisionTableViewController.m */,
+				D1261289184047B8002FFB83 /* CreateDecisionViewController.h */,
+				D126128A184047B8002FFB83 /* CreateDecisionViewController.m */,
+				D126128B184047B8002FFB83 /* CreateDecisionViewController.xib */,
+				D17994F71840993F00939EFB /* AddProsConsViewController.h */,
+				D17994F81840993F00939EFB /* AddProsConsViewController.m */,
+				D17994F91840993F00939EFB /* AddProsConsViewController.xib */,
+				D126127D18403887002FFB83 /* Decision.h */,
+				D126127E18403887002FFB83 /* Decision.m */,
+				D126128018403AB1002FFB83 /* Choice.h */,
+				D126128118403AB1002FFB83 /* Choice.m */,
+				D126128318403FF7002FFB83 /* Factor.h */,
+				D126128418403FF7002FFB83 /* Factor.m */,
 				D126125F18403399002FFB83 /* Images.xcassets */,
 				D126125C18403399002FFB83 /* DecisionMaker.xcdatamodeld */,
 				D126125118403399002FFB83 /* Supporting Files */,
@@ -229,7 +265,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D126125518403399002FFB83 /* InfoPlist.strings in Resources */,
+				D17994FB1840993F00939EFB /* AddProsConsViewController.xib in Resources */,
 				D126126018403399002FFB83 /* Images.xcassets in Resources */,
+				D126128D184047B8002FFB83 /* CreateDecisionViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,7 +288,13 @@
 			files = (
 				D126125B18403399002FFB83 /* AppDelegate.m in Sources */,
 				D126125718403399002FFB83 /* main.m in Sources */,
+				D17994FA1840993F00939EFB /* AddProsConsViewController.m in Sources */,
+				D126128C184047B8002FFB83 /* CreateDecisionViewController.m in Sources */,
+				D12612881840450F002FFB83 /* DecisionTableViewController.m in Sources */,
+				D126128518403FF7002FFB83 /* Factor.m in Sources */,
 				D126125E18403399002FFB83 /* DecisionMaker.xcdatamodeld in Sources */,
+				D126128218403AB1002FFB83 /* Choice.m in Sources */,
+				D126127F18403887002FFB83 /* Decision.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,6 +495,7 @@
 				D126127918403399002FFB83 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D126127A18403399002FFB83 /* Build configuration list for PBXNativeTarget "DecisionMakerTests" */ = {
 			isa = XCConfigurationList;
@@ -459,6 +504,7 @@
 				D126127C18403399002FFB83 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "DecisionTableViewController.h"
 
 @implementation AppDelegate
 
@@ -19,6 +20,17 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    
+    //create the scrapbook table view, set it's nav bar title, and nav bar add button
+    DecisionTableViewController *mainView = [[DecisionTableViewController alloc] initWithStyle:UITableViewStylePlain];
+    [mainView.navigationItem setTitle:@"Decisions"];
+
+    
+    // set nav bar root view controller
+    self.navController = [[UINavigationController alloc] initWithRootViewController:mainView];
+    
+    // set application root view controller
+    [self.window setRootViewController:self.navController];
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -53,6 +65,7 @@
 
 - (void)saveContext
 {
+    /*
     NSError *error = nil;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     if (managedObjectContext != nil) {
@@ -63,6 +76,7 @@
             abort();
         } 
     }
+     */
 }
 
 #pragma mark - Core Data stack
