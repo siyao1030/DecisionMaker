@@ -30,6 +30,11 @@
 -(void)setUpWithDecision:(Decision *)decision
 {
     self.decision = decision;
+    self.choiceAPros = [[decision.choices objectAtIndex:0] pros];
+    self.choiceACons = [[decision.choices objectAtIndex:0] cons];
+    self.choiceBPros = [[decision.choices objectAtIndex:1] pros];
+    self.choiceBCons = [[decision.choices objectAtIndex:1] cons];
+    
     NSString *choice1 = [[decision.choices objectAtIndex:0] title];
     NSString *choice2 = [[decision.choices objectAtIndex:1] title];
     
@@ -58,6 +63,9 @@
     self.inputField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     self.inputField.delegate = self;
     
+    self.dimBG = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    self.dimBG.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
+    
     self.isPro = [UIButton buttonWithType:UIButtonTypeSystem];
     [self.isPro setFrame:CGRectMake(100, 130, 30, 30)];
     [self.isPro setTitle:@"Pro" forState:UIControlStateNormal];
@@ -71,6 +79,12 @@
     [self.isCon setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.isCon setTitleColor:[UIColor orangeColor] forState:UIControlStateSelected];
     [self.isCon addTarget:self action:@selector(conButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.choiceATableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    [self.choiceBTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+
+
+
 
 }
 
@@ -92,9 +106,7 @@
 
 -(void)choiceAButtonPressed
 {
-    UIView *dimBG = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    dimBG.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
-    [self.view addSubview:dimBG];
+    [self.view addSubview:self.dimBG];
     [self.view addSubview:self.inputField];
     [self.view addSubview:self.isPro];
     [self.view addSubview:self.isCon];
@@ -106,10 +118,12 @@
 
 -(void)choiceBButtonPressed
 {
-    UIView *dimBG = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    dimBG.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.6];
-    [self.view addSubview:dimBG];
+
+    [self.view addSubview:self.dimBG];
     [self.view addSubview:self.inputField];
+    [self.view addSubview:self.isPro];
+    [self.view addSubview:self.isCon];
+    
     [self.inputField becomeFirstResponder];
     self.listening = self.decision.choices[1];
 
@@ -126,8 +140,8 @@
     if (self.isPro)
     {
         [self.listening addToPros:factor];
-        NSLog(@"%d",self.listening.pros.count);
-        NSLog(@"%d",[[self.decision.choices objectAtIndex:0] pros].count);
+        NSLog(@"%d",self.choiceAPros.count);
+        NSLog(@"%@",[[self.choiceAPros objectAtIndex:0] title]);
     }
     else if (self.isCon)
     {
@@ -137,9 +151,146 @@
     {
         NSLog(@"Has to select Pro or Con");
     }
+    [self.inputField removeFromSuperview];
+    [self.isPro removeFromSuperview];
+    [self.isCon removeFromSuperview];
+    [self.dimBG removeFromSuperview];
+    
+    [self.choiceATableView reloadData];
+    [self.choiceBTableView reloadData];
     
     return YES;
 }
+
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+    
+    if (self.choiceATableView==tableView)
+    {
+        return ([self.choiceAPros count] + [self.choiceACons count]);
+    }
+    else
+    {
+        return ([self.choiceBPros count] + [self.choiceBCons count]);
+    }
+
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    
+    if (self.choiceATableView==tableView)
+    {
+        if ([self.choiceATableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath])
+            cell = [self.choiceATableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    }
+    else
+    {
+        if ([self.choiceBTableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath])
+            cell = [self.choiceBTableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    }
+
+
+    
+    // Configure the cell...
+    Factor *temp = [[Factor alloc]init];
+    if (self.choiceATableView==tableView)
+    {
+        if (indexPath.row <= self.choiceAPros.count) {
+            temp = [self.choiceAPros objectAtIndex:indexPath.row];
+            NSLog(@"%d%@",indexPath.row,temp.title);
+        }
+        else
+        {
+            temp = [self.choiceACons objectAtIndex:(indexPath.row-self.choiceAPros.count)];
+        }
+        
+        [[cell textLabel] setText:temp.title];
+         NSLog(@"%d%@",indexPath.row,cell.textLabel.text);
+        [[cell textLabel] setTextAlignment:NSTextAlignmentRight];
+        //[cell setFrame:CGRectMake(0, 64, 320,44)];
+    }
+    else
+    {
+        if (indexPath.row <= self.choiceBPros.count) {
+            temp = [self.choiceBPros objectAtIndex:indexPath.row];
+        }
+        else
+        {
+            temp = [self.choiceBCons objectAtIndex:(indexPath.row-self.choiceBPros.count)];
+        }
+        [[cell textLabel] setText:temp.title];
+        [[cell textLabel] setTextAlignment:NSTextAlignmentLeft];
+        //[cell setFrame:CGRectMake(160, 64, 320,44)];
+    }
+    
+    //[[cell imageView] setImage:[[UIImage alloc] initWithData:temp.data]];
+    return cell;
+}
+
+/*
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
+
+/*
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+ [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ }
+ else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ }
+ }
+ */
+
+/*
+ // Override to support rearranging the table view.
+ - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+ {
+ }
+ */
+
+/*
+ // Override to support conditional rearranging of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+ {
+ // Return NO if you do not want the item to be re-orderable.
+ return YES;
+ }
+ */
+
+/*
+ #pragma mark - Navigation
+ 
+ // In a story board-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+ {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ 
+ */
+
 
 - (void)viewDidLoad
 {
