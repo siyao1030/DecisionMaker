@@ -52,7 +52,6 @@
     [self.view addSubview:self.choiceBButton];
     
     self.inputField = [[UITextField alloc] initWithFrame:CGRectMake(0, 170, 320, 40)];
-    //self.queryField.borderStyle = UITextBorderStyleRoundedRect;
     self.inputField.font = [UIFont systemFontOfSize:15];
     self.inputField.placeholder = @" Enter a pro or a con";
     self.inputField.backgroundColor = [UIColor whiteColor];
@@ -80,14 +79,67 @@
     [self.isCon setTitleColor:[UIColor orangeColor] forState:UIControlStateSelected];
     [self.isCon addTarget:self action:@selector(conButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
+    self.choiceATableView = [self makeLeftTableView];
+    self.choiceBTableView = [self makeRightTableView];
+
     [self.choiceATableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     [self.choiceBTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    
+    [self.view addSubview:self.choiceATableView];
+    [self.view addSubview:self.choiceBTableView];
 
 
 
 
 }
 
+-(UITableView *)makeLeftTableView
+{
+    CGFloat x = 0;
+    CGFloat y = 50;
+    CGFloat width = 155;
+    CGFloat height = self.view.frame.size.height - 110;
+    CGRect tableFrame = CGRectMake(x, y, width, height);
+    
+    UITableView *tableView = [[UITableView alloc]initWithFrame:tableFrame style:UITableViewStylePlain];
+    
+    tableView.rowHeight = 45;
+    tableView.sectionFooterHeight = 22;
+    tableView.sectionHeaderHeight = 22;
+    tableView.scrollEnabled = YES;
+    tableView.showsVerticalScrollIndicator = YES;
+    tableView.userInteractionEnabled = YES;
+    tableView.bounces = YES;
+    
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    
+    return tableView;
+}
+
+-(UITableView *)makeRightTableView
+{
+    CGFloat x = 156;
+    CGFloat y = 50;
+    CGFloat width = 155;
+    CGFloat height = self.view.frame.size.height - 110;
+    CGRect tableFrame = CGRectMake(x, y, width, height);
+    
+    UITableView *tableView = [[UITableView alloc]initWithFrame:tableFrame style:UITableViewStylePlain];
+    
+    tableView.rowHeight = 45;
+    tableView.sectionFooterHeight = 22;
+    tableView.sectionHeaderHeight = 22;
+    tableView.scrollEnabled = YES;
+    tableView.showsVerticalScrollIndicator = YES;
+    tableView.userInteractionEnabled = YES;
+    tableView.bounces = YES;
+    
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    
+    return tableView;
+}
 -(void)proButtonPressed
 {
     if (self.isCon.selected) {
@@ -219,8 +271,9 @@
         
         [[cell textLabel] setText:temp.title];
          NSLog(@"%d%@",indexPath.row,cell.textLabel.text);
+        cell.textLabel.textColor = [UIColor blueColor];
         [[cell textLabel] setTextAlignment:NSTextAlignmentRight];
-        //[cell setFrame:CGRectMake(0, 64, 320,44)];
+        [cell setFrame:CGRectMake(0, 44*indexPath.row, 160,44)];
     }
     else
     {
@@ -232,6 +285,7 @@
             temp = [self.choiceBCons objectAtIndex:(indexPath.row-self.choiceBPros.count)];
         }
         [[cell textLabel] setText:temp.title];
+        cell.textLabel.textColor = [UIColor blueColor];
         [[cell textLabel] setTextAlignment:NSTextAlignmentLeft];
         //[cell setFrame:CGRectMake(160, 64, 320,44)];
     }

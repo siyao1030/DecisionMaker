@@ -11,10 +11,13 @@
 
 @interface AddProsConsViewController : UIViewController
 
-//@property (weak, nonatomic) IBOutlet UIButton *choiceAButton;
-//@property (weak, nonatomic) IBOutlet UIButton *choiceBButton;
-@property (weak, nonatomic) IBOutlet UITableView *choiceATableView;
-@property (weak, nonatomic) IBOutlet UITableView *choiceBTableView;
+//@property (weak, nonatomic) IBOutlet UITableView *choiceATableView;
+//@property (weak, nonatomic) IBOutlet UITableView *choiceBTableView;
+
+@property UITableView *choiceATableView;
+@property UITableView *choiceBTableView;
+
+
 
 @property UIButton *choiceAButton;
 @property UIButton *choiceBButton;
