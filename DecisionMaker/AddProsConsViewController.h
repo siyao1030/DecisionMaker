@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Decision.h"
+#import "ComparisonViewController.h"
 
 @interface AddProsConsViewController : UIViewController
 
@@ -17,7 +18,7 @@
 @property UITableView *choiceATableView;
 @property UITableView *choiceBTableView;
 
-
+@property ComparisonViewController *compareView;
 
 @property UIButton *choiceAButton;
 @property UIButton *choiceBButton;
@@ -29,11 +30,11 @@
 
 @property Decision * decision;
 @property Choice   * listening;
-@property NSMutableArray *factors;
-@property NSMutableArray *choiceAPros;
-@property NSMutableArray *choiceACons;
-@property NSMutableArray *choiceBPros;
-@property NSMutableArray *choiceBCons;
+
+@property NSMutableArray *choiceAfactors;
+@property NSMutableArray *choiceBfactors;
+
+
 
 
 -(void)setUpWithDecision:(Decision *)decision;

@@ -19,24 +19,31 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-
+        [self.navigationItem setTitle:@"Pros & Cons"];
+        UIBarButtonItem * decideButton = [[UIBarButtonItem alloc]initWithTitle:@"Decide!" style:UIBarButtonItemStylePlain target:self action:@selector(didPressDecide)];
+        [self.navigationItem setRightBarButtonItem:decideButton animated:YES];
         
         
     }
     return self;
 }
 
+-(void)didPressDecide
+{
+    self.compareView = [[ComparisonViewController alloc] initWithDecision:self.decision];
+    [self.navigationController pushViewController:self.compareView animated:YES];
+    
+}
 
 -(void)setUpWithDecision:(Decision *)decision
 {
     self.decision = decision;
-    self.choiceAPros = [[decision.choices objectAtIndex:0] pros];
-    self.choiceACons = [[decision.choices objectAtIndex:0] cons];
-    self.choiceBPros = [[decision.choices objectAtIndex:1] pros];
-    self.choiceBCons = [[decision.choices objectAtIndex:1] cons];
-    
+    self.choiceAfactors = [[decision.choices objectAtIndex:0] factors];
+    self.choiceBfactors = [[decision.choices objectAtIndex:1] factors];
+
     NSString *choice1 = [[decision.choices objectAtIndex:0] title];
     NSString *choice2 = [[decision.choices objectAtIndex:1] title];
+    
     
     self.choiceAButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [self.choiceAButton setFrame:CGRectMake(20, 515, 130, 33)];
@@ -96,8 +103,8 @@
 -(UITableView *)makeLeftTableView
 {
     CGFloat x = 0;
-    CGFloat y = 50;
-    CGFloat width = 155;
+    CGFloat y = 64;
+    CGFloat width = 159;
     CGFloat height = self.view.frame.size.height - 110;
     CGRect tableFrame = CGRectMake(x, y, width, height);
     
@@ -119,9 +126,9 @@
 
 -(UITableView *)makeRightTableView
 {
-    CGFloat x = 156;
-    CGFloat y = 50;
-    CGFloat width = 155;
+    CGFloat x = 160;
+    CGFloat y = 64;
+    CGFloat width = 160;
     CGFloat height = self.view.frame.size.height - 110;
     CGRect tableFrame = CGRectMake(x, y, width, height);
     
@@ -188,16 +195,16 @@
         [self.inputField resignFirstResponder];
     }
 
-    Factor * factor = [[Factor alloc]initWithTitle:self.inputField.text];
-    if (self.isPro)
+    
+    if (self.isPro.selected)
     {
-        [self.listening addToPros:factor];
-        NSLog(@"%d",self.choiceAPros.count);
-        NSLog(@"%@",[[self.choiceAPros objectAtIndex:0] title]);
+        Factor * factor = [[Factor alloc]initWithTitle:self.inputField.text andIsPro:YES];
+        [self.listening addToFactors:factor];
     }
-    else if (self.isCon)
+    else if (self.isCon.selected)
     {
-        [self.listening addToCons:factor];
+        Factor * factor = [[Factor alloc]initWithTitle:self.inputField.text andIsPro:NO];
+        [self.listening addToFactors:factor];
     }
     else
     {
@@ -229,11 +236,12 @@
     
     if (self.choiceATableView==tableView)
     {
-        return ([self.choiceAPros count] + [self.choiceACons count]);
+        NSLog(@"count: %lu", (unsigned long)[self.choiceAfactors count]);
+        return ([self.choiceAfactors count]);
     }
     else
     {
-        return ([self.choiceBPros count] + [self.choiceBCons count]);
+        return ([self.choiceBfactors count]);
     }
 
 }
@@ -241,54 +249,65 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     
+    UITableViewCell *cell;
     if (self.choiceATableView==tableView)
     {
-        if ([self.choiceATableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath])
             cell = [self.choiceATableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     }
     else
     {
-        if ([self.choiceBTableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath])
             cell = [self.choiceBTableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     }
 
-
+    
+    if (cell == nil)
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     
     // Configure the cell...
-    Factor *temp = [[Factor alloc]init];
+    Factor *temp;
     if (self.choiceATableView==tableView)
     {
-        if (indexPath.row <= self.choiceAPros.count) {
-            temp = [self.choiceAPros objectAtIndex:indexPath.row];
-            NSLog(@"%d%@",indexPath.row,temp.title);
+        temp = [self.choiceAfactors objectAtIndex:indexPath.row];
+        NSLog(@"%d%@",indexPath.row,temp.title);
+  
+        [[cell textLabel] setText:temp.title];
+         NSLog(@"%d%@",indexPath.row,cell.textLabel.text);
+        NSLog(@"this is a pro: %hhd", temp.isPro);
+        if (temp.isPro)
+        {
+            [cell setBackgroundColor:[UIColor colorWithRed:102/255.0 green:248/255.0 blue:167/255.0 alpha:1]];
+
         }
         else
         {
-            temp = [self.choiceACons objectAtIndex:(indexPath.row-self.choiceAPros.count)];
+            [cell setBackgroundColor:[UIColor colorWithRed:103/255.0 green:192/255.0 blue:145/255.0 alpha:1]];
+
         }
         
-        [[cell textLabel] setText:temp.title];
-         NSLog(@"%d%@",indexPath.row,cell.textLabel.text);
-        cell.textLabel.textColor = [UIColor blueColor];
+        cell.textLabel.textColor = [UIColor whiteColor];
         [[cell textLabel] setTextAlignment:NSTextAlignmentRight];
-        [cell setFrame:CGRectMake(0, 44*indexPath.row, 160,44)];
     }
     else
     {
-        if (indexPath.row <= self.choiceBPros.count) {
-            temp = [self.choiceBPros objectAtIndex:indexPath.row];
+        temp = [self.choiceBfactors objectAtIndex:indexPath.row];
+        [[cell textLabel] setText:temp.title];
+        if (temp.isPro)
+        {
+            [cell setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:210/255.0 blue:0/255.0 alpha:1]];
+
         }
         else
         {
-            temp = [self.choiceBCons objectAtIndex:(indexPath.row-self.choiceBPros.count)];
+            [cell setBackgroundColor:[UIColor colorWithRed:248/255.0 green:178/255.0 blue:3/255.0 alpha:1]];
+
         }
-        [[cell textLabel] setText:temp.title];
-        cell.textLabel.textColor = [UIColor blueColor];
+        cell.textLabel.textColor = [UIColor whiteColor];
         [[cell textLabel] setTextAlignment:NSTextAlignmentLeft];
-        //[cell setFrame:CGRectMake(160, 64, 320,44)];
     }
+    
+    if (cell == nil)
+        NSLog(@"Cell is nil");
     
     //[[cell imageView] setImage:[[UIImage alloc] initWithData:temp.data]];
     return cell;

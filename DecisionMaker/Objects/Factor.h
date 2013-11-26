@@ -12,8 +12,13 @@
 
 @property NSString * title;
 @property NSMutableArray * weights;
+@property NSMutableArray * comparedWith;
 @property float averageWeight;
+@property BOOL isPro;
 
--(id)initWithTitle:(NSString *)title;
+-(id)initWithTitle:(NSString *)title andIsPro:(BOOL)isPro;
+-(BOOL)alreadyComparedWithFactorAtIndex:(NSNumber *)other;
+-(void)updateAverageWeight;
+
 
 @end

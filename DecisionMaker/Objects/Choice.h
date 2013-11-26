@@ -12,10 +12,12 @@
 @interface Choice : NSObject
 
 @property NSString* title;
-@property NSMutableArray* pros;
-@property NSMutableArray* cons;
+//@property NSMutableArray* pros;
+//@property NSMutableArray* cons;
+@property NSMutableArray* factors;
 
 -(id)initWithTitle:(NSString *)title;
--(void)addToPros:(Factor *)factor;
--(void)addToCons:(Factor *)factor;
+//-(void)addToPros:(Factor *)factor;
+//-(void)addToCons:(Factor *)factor;
+-(void)addToFactors:(Factor *)factor;
 @end

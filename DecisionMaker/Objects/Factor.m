@@ -10,13 +10,32 @@
 
 @implementation Factor
 
--(id)initWithTitle:(NSString *)title
+-(id)initWithTitle:(NSString *)title andIsPro:(BOOL)isPro;
 {
     self.title = title;
+    self.isPro = isPro;
     self.averageWeight = 0;
     self.weights = [[NSMutableArray alloc] init];
+    self.comparedWith = [[NSMutableArray alloc] init];
+    
+    [self.comparedWith addObject:[NSNumber numberWithInt:1]];
     
     return self;
 }
 
+-(BOOL)alreadyComparedWithFactorAtIndex:(NSNumber *)other
+{
+    for (NSNumber* i in self.comparedWith)
+    {
+        if (i == other)
+            return YES;
+    }
+    return NO;
+}
+
+-(void)updateAverageWeight
+{
+    NSNumber *newW = self.weights[self.weights.count-1];
+    self.averageWeight = (self.averageWeight * (self.weights.count-1) + newW.doubleValue)/self.weights.count;
+}
 @end
