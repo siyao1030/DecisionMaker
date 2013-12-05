@@ -9,10 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "Decision.h"
 #import "Comparison.h"
-#import "comparisonMaker.h"
+#import "ComparisonMaker.h"
+#import "ResultViewController.h"
+#import "BubbleView.h"
 
 @interface ComparisonViewController : UIViewController
 
+@property BubbleView * bubbles;
 @property UILabel * choiceALabel;
 @property UILabel * choiceBLabel;
 
@@ -31,6 +34,8 @@
 @property UIButton * prevButton;
 @property UIButton * nextButton;
 
+@property UIAlertView * alertView;
+
 @property Decision * decision;
 @property Choice * choiceA;
 @property Choice * choiceB;
@@ -41,7 +46,7 @@
 
 @property NSMutableArray * comparisons;
 @property Comparison *currentComparison;
-@property comparisonMaker * comparisonMaker;
+@property ComparisonMaker * comparisonMaker;
 
 -(id)initWithDecision:(Decision *)decision;
 

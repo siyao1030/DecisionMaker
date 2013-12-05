@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Factor : NSObject
+@interface Factor : NSObject <NSCopying>
 
 @property NSString * title;
 @property NSMutableArray * weights;

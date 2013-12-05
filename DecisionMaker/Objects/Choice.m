@@ -13,22 +13,12 @@
 -(id)initWithTitle:(NSString *)title
 {
     self.title = title;
-//    self.pros = [[NSMutableArray alloc] init];
-//    self.cons = [[NSMutableArray alloc] init];
     self.factors = [[NSMutableArray alloc]init];
     
     return self;
 }
 
-//-(void)addToPros:(Factor *)factor
-//{
-//    [self.pros addObject:factor];
-//}
-//
-//-(void)addToCons:(Factor *)factor
-//{
-//    [self.cons addObject:factor];
-//}
+
 
 -(void)addToFactors:(Factor *)factor
 {

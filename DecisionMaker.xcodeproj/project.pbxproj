@@ -34,6 +34,9 @@
 		D17995011841F36100939EFB /* Comparison.m in Sources */ = {isa = PBXBuildFile; fileRef = D17995001841F36100939EFB /* Comparison.m */; };
 		D17995071842B15500939EFB /* ComparisonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D17995051842B15500939EFB /* ComparisonViewController.m */; };
 		D17995081842B15500939EFB /* ComparisonViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D17995061842B15500939EFB /* ComparisonViewController.xib */; };
+		D179950B184EB9C000939EFB /* ResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D179950A184EB9C000939EFB /* ResultViewController.m */; };
+		D179950E184EBC6900939EFB /* BubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = D179950D184EBC6900939EFB /* BubbleView.m */; };
+		D1799511185050CD00939EFB /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = D1799510185050CD00939EFB /* Database.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +89,12 @@
 		D17995041842B15500939EFB /* ComparisonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComparisonViewController.h; sourceTree = "<group>"; };
 		D17995051842B15500939EFB /* ComparisonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComparisonViewController.m; sourceTree = "<group>"; };
 		D17995061842B15500939EFB /* ComparisonViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComparisonViewController.xib; sourceTree = "<group>"; };
+		D1799509184EB9C000939EFB /* ResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultViewController.h; sourceTree = "<group>"; };
+		D179950A184EB9C000939EFB /* ResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultViewController.m; sourceTree = "<group>"; };
+		D179950C184EBC6900939EFB /* BubbleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BubbleView.h; sourceTree = "<group>"; };
+		D179950D184EBC6900939EFB /* BubbleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BubbleView.m; sourceTree = "<group>"; };
+		D179950F185050CD00939EFB /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
+		D1799510185050CD00939EFB /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Database.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +157,8 @@
 		D126125018403399002FFB83 /* DecisionMaker */ = {
 			isa = PBXGroup;
 			children = (
+				D179950F185050CD00939EFB /* Database.h */,
+				D1799510185050CD00939EFB /* Database.m */,
 				D126125918403399002FFB83 /* AppDelegate.h */,
 				D126125A18403399002FFB83 /* AppDelegate.m */,
 				D12612861840450F002FFB83 /* DecisionTableViewController.h */,
@@ -161,6 +172,10 @@
 				D17995041842B15500939EFB /* ComparisonViewController.h */,
 				D17995051842B15500939EFB /* ComparisonViewController.m */,
 				D17995061842B15500939EFB /* ComparisonViewController.xib */,
+				D1799509184EB9C000939EFB /* ResultViewController.h */,
+				D179950A184EB9C000939EFB /* ResultViewController.m */,
+				D179950C184EBC6900939EFB /* BubbleView.h */,
+				D179950D184EBC6900939EFB /* BubbleView.m */,
 				D17994FC1841DDEF00939EFB /* comparisonMaker.h */,
 				D17994FD1841DDEF00939EFB /* comparisonMaker.m */,
 				D17994FF1841F36100939EFB /* Comparison.h */,
@@ -306,6 +321,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D126125B18403399002FFB83 /* AppDelegate.m in Sources */,
+				D1799511185050CD00939EFB /* Database.m in Sources */,
 				D126125718403399002FFB83 /* main.m in Sources */,
 				D17994FA1840993F00939EFB /* AddProsConsViewController.m in Sources */,
 				D17995071842B15500939EFB /* ComparisonViewController.m in Sources */,
@@ -313,10 +329,12 @@
 				D12612881840450F002FFB83 /* DecisionTableViewController.m in Sources */,
 				D17994FE1841DDEF00939EFB /* comparisonMaker.m in Sources */,
 				D126128518403FF7002FFB83 /* Factor.m in Sources */,
+				D179950E184EBC6900939EFB /* BubbleView.m in Sources */,
 				D126125E18403399002FFB83 /* DecisionMaker.xcdatamodeld in Sources */,
 				D17995011841F36100939EFB /* Comparison.m in Sources */,
 				D126128218403AB1002FFB83 /* Choice.m in Sources */,
 				D126127F18403887002FFB83 /* Decision.m in Sources */,
+				D179950B184EB9C000939EFB /* ResultViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

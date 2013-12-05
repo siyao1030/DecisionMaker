@@ -14,10 +14,15 @@
 
 @property Factor * factorA;
 @property Factor * factorB;
+@property int factorAIndex;
+@property int factorBIndex;
+
 
 @property float factorAWeight;
 @property float factorBWeight;
 
 -(id)initWithFactorA:(Factor *)factorA andFactorB:(Factor *)factorB;
+
+-(id)initWithFactorA:(Factor *)factorA andIndex:(int)a andFactorB:(Factor *)factorB andindex:(int)b;
 
 @end

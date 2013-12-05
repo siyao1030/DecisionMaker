@@ -20,5 +20,18 @@
     return self;
 }
 
+-(id)initWithFactorA:(Factor *)factorA andIndex:(int)a andFactorB:(Factor *)factorB andindex:(int)b;
+{
+    self.factorA = factorA;
+    self.factorB = factorB;
+    self.factorAIndex = a;
+    self.factorBIndex = b;
+    self.factorAWeight = 50;
+    self.factorBWeight = 50;
+    
+    return self;
+}
+
+
 
 @end

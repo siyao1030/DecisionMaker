@@ -23,7 +23,6 @@
         UIBarButtonItem * decideButton = [[UIBarButtonItem alloc]initWithTitle:@"Decide!" style:UIBarButtonItemStylePlain target:self action:@selector(didPressDecide)];
         [self.navigationItem setRightBarButtonItem:decideButton animated:YES];
         
-        
     }
     return self;
 }

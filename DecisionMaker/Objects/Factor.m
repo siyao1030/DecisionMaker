@@ -18,16 +18,18 @@
     self.weights = [[NSMutableArray alloc] init];
     self.comparedWith = [[NSMutableArray alloc] init];
     
-    [self.comparedWith addObject:[NSNumber numberWithInt:1]];
+    //[self.comparedWith addObject:[NSNumber numberWithInt:1]];
     
     return self;
 }
 
 -(BOOL)alreadyComparedWithFactorAtIndex:(NSNumber *)other
 {
+    //NSLog(@"B value: %d",other.intValue);
     for (NSNumber* i in self.comparedWith)
     {
-        if (i == other)
+        //NSLog(@"A has already compared with: %d",i.intValue);
+        if (i.intValue == other.intValue)
             return YES;
     }
     return NO;
@@ -35,7 +37,34 @@
 
 -(void)updateAverageWeight
 {
-    NSNumber *newW = self.weights[self.weights.count-1];
-    self.averageWeight = (self.averageWeight * (self.weights.count-1) + newW.doubleValue)/self.weights.count;
+    NSNumber *newWIndex = self.weights[self.weights.count-1];
+    self.averageWeight = (self.averageWeight * (self.weights.count-1) + newWIndex.doubleValue)/self.weights.count;
+    
+    NSLog(@"average weight: %f", self.averageWeight);
+    /*
+    if (self.isPro)
+    {
+        self.averageWeight = (self.averageWeight * (self.weights.count-1) + newWIndex.doubleValue)/self.weights.count;
+    }
+    else
+    {
+        self.averageWeight = (self.averageWeight * (self.weights.count-1) - newWIndex.doubleValue)/self.weights.count;
+    }
+*/
+}
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    Factor * copy = [[Factor alloc] initWithTitle:self.title andIsPro:self.isPro];
+    
+    if (copy)
+    {
+        copy.weights = [self.weights copyWithZone:zone];
+        copy.comparedWith = [self.comparedWith copyWithZone:zone];
+        copy.averageWeight = self.averageWeight;
+
+    }
+    
+    return copy;
 }
 @end

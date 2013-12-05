@@ -14,8 +14,13 @@
 @property NSString *title;
 @property NSMutableArray *choices;
 @property NSMutableDictionary *result;
+@property int Ascore;
+@property int Bscore;
+@property float Arate;
+@property float Brate;
 
 -(id)initWithChoiceA:(Choice *)choice1 andChoiceB:(Choice *)choice2 andTitle:(NSString *)title;
 
+-(void)updateScore;
 
 @end

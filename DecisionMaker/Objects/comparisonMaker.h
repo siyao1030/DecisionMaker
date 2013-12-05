@@ -11,11 +11,12 @@
 #import "Comparison.h"
 
 
-@interface comparisonMaker : NSObject
+@interface ComparisonMaker : NSObject
 
 @property Decision * decision;
 @property Choice * choiceA;
 @property Choice * choiceB;
+@property int randomCount;
 
 
 -(id)initWithDecision:(Decision *)decision;
