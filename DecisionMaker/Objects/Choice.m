@@ -19,6 +19,30 @@
 }
 
 
+- (void)resetStats
+{
+    for (Factor * factor in self.factors)
+        [factor resetStats];
+        
+}
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.title forKey:@"title"];
+    [aCoder encodeObject:self.factors forKey:@"factors"];
+
+    
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super init]) {
+        self.title = [aDecoder decodeObjectForKey:@"title"];
+        self.factors = [aDecoder decodeObjectForKey:@"factors"];
+
+    }
+    return self;
+}
+
 
 -(void)addToFactors:(Factor *)factor
 {

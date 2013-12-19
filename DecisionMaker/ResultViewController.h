@@ -9,17 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "Decision.h"
 #import "BubbleView.h"
+#import "Database.h"
 
 @interface ResultViewController : UIViewController
 
 @property Decision * decision;
 
-@property BubbleView *bubbles;
+@property BubbleView * bubbles;
 
 @property BubbleView * choiceABubble;
 @property BubbleView * choiceBBubble;
 
-
+@property UIBarButtonItem * endButton;
+@property UILabel * resultLabel;
+@property UILabel * winner;
 
 -(id)initWithDecision:(Decision *)decision;
 

@@ -19,7 +19,9 @@
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
-        self.decisions = [[NSMutableArray alloc] init];
+        //self.decisions = [[NSMutableArray alloc] init];
+        self.view.backgroundColor = bgColor;
+        self.decisions = [Database fetchAllItems];
         
         // register the type of view to create for a table cell
         [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
@@ -27,20 +29,45 @@
         
         // initialize the item creation view controller
         self.createDecisionView = [[CreateDecisionViewController alloc] initWithNibName:@"CreateDecisionViewController" bundle:nil];
+        [self.createDecisionView setup];
         self.createDecisionView.target = self;
         self.createDecisionView.action = @selector(addDecision:);
+
     }
     return self;
 }
 
+- (void)reload
+{
+    self.decisions = [Database fetchAllItems];
+    [self.tableView reloadData];
+}
+
 -(void)addDecision:(Decision *)decision
 {
-    [self.decisions addObject:decision];
-    [self.tableView reloadData];
+    
+    if (decision != nil)
+    {
+        // haven't been saved before
+        if (decision.rowid == -1)
+        {
+            int rowid = [Database saveItemWithData:decision];
+            decision.rowid = rowid;
+            NSLog(@"saving first time in addDecision: stage: %d, rowid: %d",decision.stage, rowid);
+        }
+        else
+        {
+            [Database replaceItemWithData:decision atRow:decision.rowid];
+        }
+        
+        // Decision table view reload
+        [self reload];
+    }
 }
 
 -(void)addButtonPressed
 {
+    [self.createDecisionView resetFields];
     [self.navigationController pushViewController:self.createDecisionView animated:YES];
 }
 
@@ -54,9 +81,22 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
-    UIBarButtonItem * addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonPressed)];
     
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+    label.backgroundColor = [UIColor clearColor];
+    label.font = [UIFont boldSystemFontOfSize:20.0];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = titleColor; // change this color
+    self.navigationItem.titleView = label;
+    
+    [label setText: @"Decisions"];
+    [label sizeToFit];
+    
+    UIBarButtonItem * addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addButtonPressed)];
+    addButton.tintColor = titleColor;
     [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObject:addButton]];
+    
+
     
 }
 
@@ -80,6 +120,8 @@
     return [self.decisions count];
 }
 
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
@@ -94,9 +136,13 @@
     Decision *temp = [self.decisions objectAtIndex:indexPath.row];
     [[cell textLabel] setText:temp.title];
     [[cell textLabel] setTextAlignment:NSTextAlignmentRight];
+    [[cell textLabel] setFont:[UIFont fontWithName: @"HelveticaNeue-CondensedBold"  size: 25]];
     [cell setFrame:CGRectMake(0, 0, 100,100)];
+    [cell setBackgroundColor:bgColor];
     
-    //[[cell imageView] setImage:[[UIImage alloc] initWithData:temp.data]];
+    NSLog(@"%d",temp.stage);
+    [[cell imageView] setImage:[UIImage imageNamed:[NSString stringWithFormat:@"stage%d.png",temp.stage]]];
+    [[cell imageView] setFrame:CGRectMake(0, 0, 32, 32)];
     return cell;
     }
 
@@ -109,19 +155,83 @@
 }
 */
 
-/*
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+        // kind of hacky -> actual rowid in db is # of items - indexpath.row because they table is in the opposite order of db
+        //[Database deleteItem:self.decisions.count-indexPath.row-1];
+        NSLog(@"rowid: %d",[[self.decisions objectAtIndex:indexPath.row] rowid]);
+        [Database deleteItem:[[self.decisions objectAtIndex:indexPath.row] rowid]];
+        self.decisions = [Database fetchAllItems];
+        
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
+    }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+        
+    }
 }
-*/
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    Decision *temp = [self.decisions objectAtIndex:indexPath.row];
+    // Navigation logic may go here. Create and push another view controller.
+    NSLog(@"temp's rid: %d", temp.rowid);
+
+    
+    if (temp.stage == CreateStage)
+    {
+        CreateDecisionViewController * createView = [[CreateDecisionViewController alloc]initWithNibName:@"CreateDecisionViewController" bundle:nil];
+        [createView setup];
+        [createView setUpWithDecision:temp];
+        [self.navigationController pushViewController:createView animated:YES];
+    }
+    else if (temp.stage == ProsConsStage)
+    {
+        CreateDecisionViewController * createView = [[CreateDecisionViewController alloc]initWithNibName:@"CreateDecisionViewController" bundle:nil];
+        [createView setup];
+        [createView setUpWithDecision:temp];
+        [self.navigationController pushViewController:createView animated:NO];
+        
+        AddProsConsViewController * prosConsView = [[AddProsConsViewController alloc]initWithNibName:@"AddProsConsViewController" bundle:nil];
+        [prosConsView setUpWithDecision:temp];
+        [self.navigationController pushViewController:prosConsView animated:YES];
+    }
+    else if (temp.stage == ComparisonStage)
+    {
+        CreateDecisionViewController * createView = [[CreateDecisionViewController alloc]initWithNibName:@"CreateDecisionViewController" bundle:nil];
+        [createView setup];
+        [createView setUpWithDecision:temp];
+        [self.navigationController pushViewController:createView animated:NO];
+        
+        AddProsConsViewController * prosConsView = [[AddProsConsViewController alloc]initWithNibName:@"AddProsConsViewController" bundle:nil];
+        [prosConsView setUpWithDecision:temp];
+        [self.navigationController pushViewController:prosConsView animated:NO];
+        
+        ComparisonViewController * compareView = [[ComparisonViewController alloc]initWithDecision:temp];
+        [self.navigationController pushViewController:compareView animated:YES];
+    }
+    else if (temp.stage == ResultStage)
+    {
+        CreateDecisionViewController * createView = [[CreateDecisionViewController alloc]initWithNibName:@"CreateDecisionViewController" bundle:nil];
+        [createView setup];
+        [createView setUpWithDecision:temp];
+        [self.navigationController pushViewController:createView animated:NO];
+        
+        AddProsConsViewController * prosConsView = [[AddProsConsViewController alloc]initWithNibName:@"AddProsConsViewController" bundle:nil];
+        [prosConsView setUpWithDecision:temp];
+        [self.navigationController pushViewController:prosConsView animated:NO];
+        
+        ComparisonViewController * compareView = [[ComparisonViewController alloc]initWithDecision:temp];
+        [self.navigationController pushViewController:compareView animated:NO];
+
+        ResultViewController * resultView= [[ResultViewController alloc]initWithDecision:temp];
+        [self.navigationController pushViewController:resultView animated:YES];
+        
+    }
+}
 
 /*
 // Override to support rearranging the table view.

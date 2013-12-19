@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Factor : NSObject <NSCopying>
+@interface Factor : NSObject <NSCopying,NSCoding>
 
 @property NSString * title;
 @property NSMutableArray * weights;
@@ -19,6 +19,11 @@
 -(id)initWithTitle:(NSString *)title andIsPro:(BOOL)isPro;
 -(BOOL)alreadyComparedWithFactorAtIndex:(NSNumber *)other;
 -(void)updateAverageWeight;
+- (void)resetStats;
+
+- (void)encodeWithCoder:(NSCoder *)aCoder;
+- (id)initWithCoder:(NSCoder *)aDecoder;
+
 
 
 @end

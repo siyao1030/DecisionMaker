@@ -7,6 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D10AAE021862B52D005BFD7E /* closeicon.png in Resources */ = {isa = PBXBuildFile; fileRef = D10AAE011862B52D005BFD7E /* closeicon.png */; };
+		D10AAE041862C93E005BFD7E /* next.png in Resources */ = {isa = PBXBuildFile; fileRef = D10AAE031862C93E005BFD7E /* next.png */; };
+		D10AAE061862CC46005BFD7E /* confirm.png in Resources */ = {isa = PBXBuildFile; fileRef = D10AAE051862CC46005BFD7E /* confirm.png */; };
+		D10AAE081862DF96005BFD7E /* icon@x2.png in Resources */ = {isa = PBXBuildFile; fileRef = D10AAE071862DF96005BFD7E /* icon@x2.png */; };
+		D10AAE0C1862E0E9005BFD7E /* icon58.png in Resources */ = {isa = PBXBuildFile; fileRef = D10AAE091862E0E9005BFD7E /* icon58.png */; };
+		D10AAE0D1862E0E9005BFD7E /* icon80.png in Resources */ = {isa = PBXBuildFile; fileRef = D10AAE0A1862E0E9005BFD7E /* icon80.png */; };
+		D10AAE0E1862E0E9005BFD7E /* icon120.png in Resources */ = {isa = PBXBuildFile; fileRef = D10AAE0B1862E0E9005BFD7E /* icon120.png */; };
+		D10BFD29185EEB670095C732 /* stage3.png in Resources */ = {isa = PBXBuildFile; fileRef = D10BFD26185EEB670095C732 /* stage3.png */; };
+		D10BFD2A185EEB670095C732 /* stage2.png in Resources */ = {isa = PBXBuildFile; fileRef = D10BFD27185EEB670095C732 /* stage2.png */; };
+		D10BFD2B185EEB670095C732 /* stage1.png in Resources */ = {isa = PBXBuildFile; fileRef = D10BFD28185EEB670095C732 /* stage1.png */; };
+		D10BFD2E185EF1DA0095C732 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D10BFD2C185EF1DA0095C732 /* icon.png */; };
+		D10BFD2F185EF1DA0095C732 /* icon-doit.png in Resources */ = {isa = PBXBuildFile; fileRef = D10BFD2D185EF1DA0095C732 /* icon-doit.png */; };
+		D10BFD31185FD0D30095C732 /* decisions.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = D10BFD30185FD0D30095C732 /* decisions.sqlite */; };
 		D126124918403399002FFB83 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D126124818403399002FFB83 /* Foundation.framework */; };
 		D126124B18403399002FFB83 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D126124A18403399002FFB83 /* CoreGraphics.framework */; };
 		D126124D18403399002FFB83 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D126124C18403399002FFB83 /* UIKit.framework */; };
@@ -37,6 +50,7 @@
 		D179950B184EB9C000939EFB /* ResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D179950A184EB9C000939EFB /* ResultViewController.m */; };
 		D179950E184EBC6900939EFB /* BubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = D179950D184EBC6900939EFB /* BubbleView.m */; };
 		D1799511185050CD00939EFB /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = D1799510185050CD00939EFB /* Database.m */; };
+		D17995151851738300939EFB /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D17995141851738200939EFB /* libsqlite3.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +64,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D10AAE011862B52D005BFD7E /* closeicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = closeicon.png; sourceTree = "<group>"; };
+		D10AAE031862C93E005BFD7E /* next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = next.png; sourceTree = "<group>"; };
+		D10AAE051862CC46005BFD7E /* confirm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = confirm.png; sourceTree = "<group>"; };
+		D10AAE071862DF96005BFD7E /* icon@x2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@x2.png"; path = "../../../icon@x2.png"; sourceTree = "<group>"; };
+		D10AAE091862E0E9005BFD7E /* icon58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon58.png; path = ../../../icon58.png; sourceTree = "<group>"; };
+		D10AAE0A1862E0E9005BFD7E /* icon80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon80.png; path = ../../../icon80.png; sourceTree = "<group>"; };
+		D10AAE0B1862E0E9005BFD7E /* icon120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon120.png; path = ../../../icon120.png; sourceTree = "<group>"; };
+		D10BFD26185EEB670095C732 /* stage3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stage3.png; sourceTree = "<group>"; };
+		D10BFD27185EEB670095C732 /* stage2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stage2.png; sourceTree = "<group>"; };
+		D10BFD28185EEB670095C732 /* stage1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stage1.png; sourceTree = "<group>"; };
+		D10BFD2C185EF1DA0095C732 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../../../icon.png; sourceTree = "<group>"; };
+		D10BFD2D185EF1DA0095C732 /* icon-doit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-doit.png"; path = "../../../icon-doit.png"; sourceTree = "<group>"; };
+		D10BFD30185FD0D30095C732 /* decisions.sqlite */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = decisions.sqlite; sourceTree = "<group>"; };
 		D126124518403399002FFB83 /* DecisionMaker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DecisionMaker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D126124818403399002FFB83 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D126124A18403399002FFB83 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -95,6 +122,7 @@
 		D179950D184EBC6900939EFB /* BubbleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BubbleView.m; sourceTree = "<group>"; };
 		D179950F185050CD00939EFB /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
 		D1799510185050CD00939EFB /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Database.m; sourceTree = "<group>"; };
+		D17995141851738200939EFB /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D17995151851738300939EFB /* libsqlite3.dylib in Frameworks */,
 				D126124B18403399002FFB83 /* CoreGraphics.framework in Frameworks */,
 				D126124F18403399002FFB83 /* CoreData.framework in Frameworks */,
 				D126124D18403399002FFB83 /* UIKit.framework in Frameworks */,
@@ -145,6 +174,7 @@
 		D126124718403399002FFB83 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D17995141851738200939EFB /* libsqlite3.dylib */,
 				D126124818403399002FFB83 /* Foundation.framework */,
 				D126124A18403399002FFB83 /* CoreGraphics.framework */,
 				D126124C18403399002FFB83 /* UIKit.framework */,
@@ -157,6 +187,14 @@
 		D126125018403399002FFB83 /* DecisionMaker */ = {
 			isa = PBXGroup;
 			children = (
+				D126127D18403887002FFB83 /* Decision.h */,
+				D126127E18403887002FFB83 /* Decision.m */,
+				D126128018403AB1002FFB83 /* Choice.h */,
+				D126128118403AB1002FFB83 /* Choice.m */,
+				D126128318403FF7002FFB83 /* Factor.h */,
+				D126128418403FF7002FFB83 /* Factor.m */,
+				D17994FF1841F36100939EFB /* Comparison.h */,
+				D17995001841F36100939EFB /* Comparison.m */,
 				D179950F185050CD00939EFB /* Database.h */,
 				D1799510185050CD00939EFB /* Database.m */,
 				D126125918403399002FFB83 /* AppDelegate.h */,
@@ -167,27 +205,20 @@
 				D126128A184047B8002FFB83 /* CreateDecisionViewController.m */,
 				D126128B184047B8002FFB83 /* CreateDecisionViewController.xib */,
 				D17994F71840993F00939EFB /* AddProsConsViewController.h */,
-				D17994F91840993F00939EFB /* AddProsConsViewController.xib */,
 				D17994F81840993F00939EFB /* AddProsConsViewController.m */,
+				D17994F91840993F00939EFB /* AddProsConsViewController.xib */,
+				D179950C184EBC6900939EFB /* BubbleView.h */,
+				D179950D184EBC6900939EFB /* BubbleView.m */,
+				D17994FC1841DDEF00939EFB /* comparisonMaker.h */,
+				D17994FD1841DDEF00939EFB /* comparisonMaker.m */,
 				D17995041842B15500939EFB /* ComparisonViewController.h */,
 				D17995051842B15500939EFB /* ComparisonViewController.m */,
 				D17995061842B15500939EFB /* ComparisonViewController.xib */,
 				D1799509184EB9C000939EFB /* ResultViewController.h */,
 				D179950A184EB9C000939EFB /* ResultViewController.m */,
-				D179950C184EBC6900939EFB /* BubbleView.h */,
-				D179950D184EBC6900939EFB /* BubbleView.m */,
-				D17994FC1841DDEF00939EFB /* comparisonMaker.h */,
-				D17994FD1841DDEF00939EFB /* comparisonMaker.m */,
-				D17994FF1841F36100939EFB /* Comparison.h */,
-				D17995001841F36100939EFB /* Comparison.m */,
-				D126127D18403887002FFB83 /* Decision.h */,
-				D126127E18403887002FFB83 /* Decision.m */,
-				D126128018403AB1002FFB83 /* Choice.h */,
-				D126128118403AB1002FFB83 /* Choice.m */,
-				D126128318403FF7002FFB83 /* Factor.h */,
-				D126128418403FF7002FFB83 /* Factor.m */,
 				D126125F18403399002FFB83 /* Images.xcassets */,
 				D126125C18403399002FFB83 /* DecisionMaker.xcdatamodeld */,
+				D10BFD30185FD0D30095C732 /* decisions.sqlite */,
 				D126125118403399002FFB83 /* Supporting Files */,
 			);
 			path = DecisionMaker;
@@ -196,6 +227,18 @@
 		D126125118403399002FFB83 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D10AAE091862E0E9005BFD7E /* icon58.png */,
+				D10AAE0A1862E0E9005BFD7E /* icon80.png */,
+				D10AAE0B1862E0E9005BFD7E /* icon120.png */,
+				D10AAE071862DF96005BFD7E /* icon@x2.png */,
+				D10AAE051862CC46005BFD7E /* confirm.png */,
+				D10AAE031862C93E005BFD7E /* next.png */,
+				D10AAE011862B52D005BFD7E /* closeicon.png */,
+				D10BFD2C185EF1DA0095C732 /* icon.png */,
+				D10BFD2D185EF1DA0095C732 /* icon-doit.png */,
+				D10BFD26185EEB670095C732 /* stage3.png */,
+				D10BFD27185EEB670095C732 /* stage2.png */,
+				D10BFD28185EEB670095C732 /* stage1.png */,
 				D126125218403399002FFB83 /* DecisionMaker-Info.plist */,
 				D126125318403399002FFB83 /* InfoPlist.strings */,
 				D126125618403399002FFB83 /* main.m */,
@@ -297,11 +340,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D10BFD31185FD0D30095C732 /* decisions.sqlite in Resources */,
+				D10AAE0D1862E0E9005BFD7E /* icon80.png in Resources */,
 				D126125518403399002FFB83 /* InfoPlist.strings in Resources */,
+				D10AAE061862CC46005BFD7E /* confirm.png in Resources */,
+				D10AAE0C1862E0E9005BFD7E /* icon58.png in Resources */,
 				D17994FB1840993F00939EFB /* AddProsConsViewController.xib in Resources */,
+				D10AAE021862B52D005BFD7E /* closeicon.png in Resources */,
+				D10BFD29185EEB670095C732 /* stage3.png in Resources */,
+				D10AAE0E1862E0E9005BFD7E /* icon120.png in Resources */,
+				D10BFD2A185EEB670095C732 /* stage2.png in Resources */,
+				D10BFD2F185EF1DA0095C732 /* icon-doit.png in Resources */,
 				D126126018403399002FFB83 /* Images.xcassets in Resources */,
 				D126128D184047B8002FFB83 /* CreateDecisionViewController.xib in Resources */,
+				D10BFD2E185EF1DA0095C732 /* icon.png in Resources */,
+				D10BFD2B185EEB670095C732 /* stage1.png in Resources */,
 				D17995081842B15500939EFB /* ComparisonViewController.xib in Resources */,
+				D10AAE041862C93E005BFD7E /* next.png in Resources */,
+				D10AAE081862DF96005BFD7E /* icon@x2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,7 +507,6 @@
 		D126127818403399002FFB83 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DecisionMaker/DecisionMaker-Prefix.pch";
@@ -464,7 +519,6 @@
 		D126127918403399002FFB83 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DecisionMaker/DecisionMaker-Prefix.pch";

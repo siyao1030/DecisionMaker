@@ -12,6 +12,8 @@
 #import "ComparisonMaker.h"
 #import "ResultViewController.h"
 #import "BubbleView.h"
+#import "Database.h"
+
 
 @interface ComparisonViewController : UIViewController
 
@@ -21,15 +23,6 @@
 
 @property int factorAWeight;
 @property int factorBWeight;
-
-@property UILabel * factorAWeightLabel;
-@property UILabel * factorBWeightLabel;
-
-@property UILabel * factorALabel;
-@property UILabel * factorBLabel;
-
-@property UIButton * factorAButton;
-@property UIButton * factorBButton;
 
 @property UIButton * prevButton;
 @property UIButton * nextButton;
@@ -47,6 +40,8 @@
 @property NSMutableArray * comparisons;
 @property Comparison *currentComparison;
 @property ComparisonMaker * comparisonMaker;
+
+-(void)reload;
 
 -(id)initWithDecision:(Decision *)decision;
 

@@ -57,7 +57,6 @@
     
     // gets the coordinats of the touch with respect to the specified view.
     CGPoint touchPoint = [touch locationInView:self];
-    NSLog(@"touchPoint x: %f, y: %f", touchPoint.x, touchPoint.y);
     
     // test the coordinates however you wish,
     // within circle A
@@ -71,14 +70,12 @@
     
     if (Axdiff*Axdiff + Aydiff*Aydiff <=radiusA*radiusA)
     {
-        NSLog(@"touch A");
         [self.target performSelector:self.increaseA withObject:nil];
         //[self setNeedsDisplay];
     }
     
     if (Bxdiff*Bxdiff + Bydiff*Bydiff <=radiusB*radiusB)
     {
-        NSLog(@"touch B");
         [self.target performSelector:self.increaseB withObject:nil];
         //[self setNeedsDisplay];
     }

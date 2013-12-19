@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "Decision.h"
 #import "ComparisonViewController.h"
+#import "Database.h"
 
 @interface AddProsConsViewController : UIViewController
 
-//@property (weak, nonatomic) IBOutlet UITableView *choiceATableView;
-//@property (weak, nonatomic) IBOutlet UITableView *choiceBTableView;
+
 
 @property UITableView *choiceATableView;
 @property UITableView *choiceBTableView;
@@ -26,7 +26,8 @@
 @property UIView *dimBG;
 @property UIButton *isPro;
 @property UIButton *isCon;
-
+@property UIBarButtonItem * decideButton;
+@property UIButton * cancelButton;
 
 @property Decision * decision;
 @property Choice   * listening;

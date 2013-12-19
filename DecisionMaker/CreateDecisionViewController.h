@@ -12,12 +12,27 @@
 
 @interface CreateDecisionViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UITextField *decisionTitle;
+//@property (weak, nonatomic) IBOutlet UITextField *decisionTitle;
 
-@property (weak, nonatomic) IBOutlet UITextField *choiceA;
-@property (weak, nonatomic) IBOutlet UITextField *choiceB;
+//@property (weak, nonatomic) IBOutlet UITextField *choiceA;
+//@property (weak, nonatomic) IBOutlet UITextField *choiceB;
+
+@property UITextField *decisionTitle;
+
+@property UITextField *choiceA;
+@property UITextField *choiceB;
+
+
+
+@property Decision *decision;
 
 @property id target;
 @property SEL action;
+
+-(void)setUpWithDecision:(Decision *)decision;
+-(void)setup;
+
+-(void)resetFields;
+
 
 @end

@@ -9,11 +9,16 @@
 #import <Foundation/Foundation.h>
 #import "Factor.h"
 
-@interface Choice : NSObject
+@interface Choice : NSObject <NSCoding>
 
 @property NSString* title;
 @property NSMutableArray* factors;
 
 -(id)initWithTitle:(NSString *)title;
 -(void)addToFactors:(Factor *)factor;
+- (void)resetStats;
+
+- (void)encodeWithCoder:(NSCoder *)aCoder;
+- (id)initWithCoder:(NSCoder *)aDecoder;
+
 @end

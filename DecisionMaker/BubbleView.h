@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Decision.h"
 
 @interface BubbleView : UIView
 

@@ -14,15 +14,6 @@
 
 @implementation ComparisonViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 
 -(Decision *)jeffDecisionTest
 {
@@ -48,14 +39,31 @@
 }
 -(id)initWithDecision:(Decision *)decision
 {
-    //self.decision = decision;
+    
+    self.view.backgroundColor = bgColor;
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+    label.backgroundColor = [UIColor clearColor];
+    label.font = [UIFont boldSystemFontOfSize:18.0];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = titleColor; // change this color
+    self.navigationItem.titleView = label;
+    
+    [label setText: @"Comparison"];
+    [label sizeToFit];
+    
+    
+
+
+    self.decision = decision;
+    
+    NSLog(@"stage when enter comparison view: %d", self.decision.stage);
     //using testing decision
     
     //interfaces
     
-    self.bubbles = [[BubbleView alloc]initWithFrame:CGRectMake(0, 40, 320, 400)];
-    //[self.bubbles setUpWithItemALabel:@"Seattle" andASize:80 andItemBLabel:@"San Fran" andBSize:20 andShouldDisplaySize:YES];
-    [self.bubbles setBackgroundColor:[UIColor whiteColor]];
+    self.bubbles = [[BubbleView alloc]initWithFrame:CGRectMake(0, 10, 320, 400)];
+    [self.bubbles setBackgroundColor:bgColor];
     self.bubbles.target = self;
     self.bubbles.increaseA = @selector(increaseFactorA);
     self.bubbles.increaseB = @selector(increaseFactorB);
@@ -68,60 +76,41 @@
     self.choiceBLabel = [[UILabel alloc]initWithFrame:CGRectMake(170, 70, 130, 33)];
     [self.view addSubview:self.choiceBLabel];
     
+    //dont delete yet, need to improve
     /*
-    self.factorALabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 60, 300, 33)];
-    //title will be updated as user presses the button
-    self.factorALabel.adjustsFontSizeToFitWidth = YES;
-    [self.factorALabel setTextAlignment:NSTextAlignmentCenter];
-    [self.view addSubview:self.factorALabel];
-    
-    self.factorBLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 410, 300, 33)];
-    //title will be updated as user presses the button
-    self.factorBLabel.adjustsFontSizeToFitWidth = YES;
-    [self.factorBLabel setTextAlignment:NSTextAlignmentCenter];
-    [self.view addSubview:self.factorBLabel];
-    
-    self.factorAButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.factorAButton setFrame:CGRectMake(110, 140, 100, 100)];
-    //title shall be set according to the comparisons
-    [self.factorAButton setBackgroundColor:[UIColor colorWithRed:102/255.0 green:248/255.0 blue:167/255.0 alpha:0.6]];
-    [self.factorAButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.factorAButton.titleLabel setFont:[UIFont systemFontOfSize:30]];
-    [self.factorAButton addTarget:self action:@selector(increaseFactorA) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.factorAButton];
-    
-    self.factorBButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.factorBButton setFrame:CGRectMake(110, 250, 100, 100)];
-    //title shall be set according to the comparisons,
-    [self.factorBButton setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:210/255.0 blue:0/255.0 alpha:0.6]];
-    [self.factorBButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.factorBButton.titleLabel setFont:[UIFont systemFontOfSize:30]];
-    [self.factorBButton addTarget:self action:@selector(increaseFactorB) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.factorBButton];
-    */
     self.prevButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [self.prevButton setFrame:CGRectMake(10, self.view.frame.size.height-130, 80, 33)];
     [self.prevButton setTitle:@"< Previous" forState:UIControlStateNormal];
     [self.prevButton addTarget:self action:@selector(prevComparison) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.prevButton];
-    
+    */
+    /*
     self.nextButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [self.nextButton setFrame:CGRectMake(240, self.view.frame.size.height-130, 70, 33)];
     [self.nextButton setTitle:@"Confirm >" forState:UIControlStateNormal];
     [self.nextButton addTarget:self action:@selector(nextComparison) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.nextButton];
+    */
     
+    self.nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.nextButton setFrame:CGRectMake((320-88)/2, self.view.frame.size.height-145, 88, 20)];
+    [self.nextButton setBackgroundImage:[UIImage imageNamed:@"confirm.png"] forState:UIControlStateNormal];
+
+    
+    [self.nextButton addTarget:self action:@selector(nextComparison) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.nextButton];
     
     //internals
-    self.decision = [self jeffDecisionTest];
+    self.decision = decision;
     
     self.choiceA = self.decision.choices[0];
     self.choiceB = self.decision.choices[1];
     
+    self.comparisonMaker = [[ComparisonMaker alloc]initWithDecision:self.decision];
+    
     self.numOfCompPerRound = MAX(self.choiceA.factors.count, self.choiceB.factors.count);
     self.numOfCompsDone = 0;
     
-    self.comparisonMaker = [[ComparisonMaker alloc]initWithDecision:self.decision];
     self.comparisons = [self.comparisonMaker inOrderCompsGeneratorWithArrayA:self.choiceA.factors andArrayB:self.choiceB.factors];
     self.currentComparison = self.comparisons[self.numOfCompsDone];
     
@@ -131,34 +120,47 @@
 
 }
 
+-(void)reload
+{
+    self.numOfCompsDone = 0;
+    
+    self.comparisons = [self.comparisonMaker inOrderCompsGeneratorWithArrayA:self.choiceA.factors andArrayB:self.choiceB.factors];
+    self.currentComparison = self.comparisons[self.numOfCompsDone];
+    self.nextButton.enabled = YES;
+    
+    [self updateLabels];
+}
+
 -(void)increaseFactorA
 {
-    NSLog(@"in increase a");
-    self.currentComparison.factorAWeight += 10;
-    self.currentComparison.factorBWeight -= 10;
+    if (self.currentComparison.factorAWeight <=80)
+    {
+        self.currentComparison.factorAWeight += 10;
+        self.currentComparison.factorBWeight -= 10;
+        [self.bubbles setUpWithItemALabel:self.currentComparison.factorA.title andASize:self.currentComparison.factorAWeight andItemBLabel:self.currentComparison.factorB.title andBSize:self.currentComparison.factorBWeight andShouldDisplaySize:YES];
+        [self.bubbles setNeedsDisplay];
+    }
     
-    [self.bubbles setUpWithItemALabel:self.currentComparison.factorA.title andASize:self.currentComparison.factorAWeight andItemBLabel:self.currentComparison.factorB.title andBSize:self.currentComparison.factorBWeight andShouldDisplaySize:YES];
-    [self.bubbles setNeedsDisplay];
+    
 
-    /*
-    [self.factorAButton setTitle:[NSString stringWithFormat:@"%d", self.factorAWeight]  forState:UIControlStateNormal];
-    [self.factorBButton setTitle:[NSString stringWithFormat:@"%d", self.factorBWeight]  forState:UIControlStateNormal];
-     */
+
 
 }
 
 
 -(void)increaseFactorB
 {
-    self.currentComparison.factorAWeight -= 10;
-    self.currentComparison.factorBWeight += 10;
+    if (self.currentComparison.factorBWeight <=80)
+    {
+        self.currentComparison.factorAWeight -= 10;
+        self.currentComparison.factorBWeight += 10;
+        
+        [self.bubbles setUpWithItemALabel:self.currentComparison.factorA.title andASize:self.currentComparison.factorAWeight andItemBLabel:self.currentComparison.factorB.title andBSize:self.currentComparison.factorBWeight andShouldDisplaySize:YES];
+        [self.bubbles setNeedsDisplay];
+    }
     
-    [self.bubbles setUpWithItemALabel:self.currentComparison.factorA.title andASize:self.currentComparison.factorAWeight andItemBLabel:self.currentComparison.factorB.title andBSize:self.currentComparison.factorBWeight andShouldDisplaySize:YES];
-    [self.bubbles setNeedsDisplay];
-    /*
-    [self.factorAButton setTitle:[NSString stringWithFormat:@"%d", self.factorAWeight]  forState:UIControlStateNormal];
-    [self.factorBButton setTitle:[NSString stringWithFormat:@"%d", self.factorBWeight]  forState:UIControlStateNormal];
-    */
+    
+
 }
 
 -(void)prevComparison
@@ -170,8 +172,8 @@
 {
     //record current comp's information
     self.numOfCompsDone +=1;
-    [self.currentComparison.factorA.weights addObject:[NSNumber numberWithInt:self.factorAWeight]];
-    [self.currentComparison.factorB.weights addObject:[NSNumber numberWithInt:self.factorBWeight]];
+    [self.currentComparison.factorA.weights addObject:[NSNumber numberWithInt:self.currentComparison.factorAWeight]];
+    [self.currentComparison.factorB.weights addObject:[NSNumber numberWithInt:self.currentComparison.factorBWeight]];
     [self.currentComparison.factorA updateAverageWeight];
     [self.currentComparison.factorB updateAverageWeight];
     [self.decision updateScore];
@@ -201,6 +203,7 @@
         
         self.currentComparison = self.comparisons[self.numOfCompsDone];
         [self updateLabels];
+        
     }
     
     
@@ -212,20 +215,37 @@
     {
         if (buttonIndex == 0)
         {
+            self.decision.stage = ResultStage;
+            [self.decision updateResult];
+            [Database replaceItemWithData:self.decision atRow:self.decision.rowid];
+            
+            // Decision table view reload
+            [[self.navigationController.viewControllers objectAtIndex:0] reload];
+            
             ResultViewController * resultView = [[ResultViewController alloc]initWithDecision:self.decision];
             
             [self.navigationController pushViewController:resultView animated:YES];
             
         }
-            // present result view
     }
     if (alertView.numberOfButtons == 2)
     {
         if (buttonIndex == 1)
         {
+            self.decision.stage = ResultStage;
+            [self.decision updateResult];
+
+            [Database replaceItemWithData:self.decision atRow:self.decision.rowid];
+            
+            // Decision table view reload
+            [[self.navigationController.viewControllers objectAtIndex:0] reload];
+            
+            ResultViewController * resultView = [[ResultViewController alloc]initWithDecision:self.decision];
+            
+            [self.navigationController pushViewController:resultView animated:YES];
             
         }
-            //present result view
+        
     }
 }
 
@@ -277,20 +297,19 @@
     self.factorAWeight = self.currentComparison.factorAWeight;
     self.factorBWeight = self.currentComparison.factorBWeight;
     
-    /*
-    [self.factorALabel setText:self.currentComparison.factorA.title];
-    [self.factorBLabel setText:self.currentComparison.factorB.title];
-    [self.factorAButton setTitle:[NSString stringWithFormat:@"%d", self.factorAWeight]  forState:UIControlStateNormal];
-    [self.factorBButton setTitle:[NSString stringWithFormat:@"%d", self.factorBWeight]  forState:UIControlStateNormal];
-     */
-}
-    
+    [self.bubbles setNeedsDisplay];
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
 }
+
+-(void) viewWillDisappear:(BOOL)animated {
+    if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
+        // back button was pressed.  We know this is true because self is no longer
+        // in the navigation stack.
+        NSLog(@"press back in comparisons: %d",self.decision.stage);
+    }
+    [super viewWillDisappear:animated];
+}
+
 
 - (void)didReceiveMemoryWarning
 {

@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DecisionTableViewController.h"
+
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

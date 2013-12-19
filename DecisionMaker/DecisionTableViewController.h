@@ -9,10 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "Decision.h"
 #import "CreateDecisionViewController.h"
+#import "AddProsConsViewController.h"
+#import "ComparisonViewController.h"
+#import "ResultViewController.h"
+#import "Database.h"
 
 @interface DecisionTableViewController : UITableViewController
 
-//ViewControllers
 @property CreateDecisionViewController * createDecisionView;
 
 @property NSMutableArray * decisions;

@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "DecisionTableViewController.h"
 
 @implementation AppDelegate
 
@@ -17,17 +16,31 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [Database createEditableCopyOfDatabaseIfNeeded];
+    [Database initDatabase];
+    
+    [[UIBarButtonItem appearance] setTintColor:titleColor];
+    
+
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.backgroundColor = bgColor;
     
     //create the scrapbook table view, set it's nav bar title, and nav bar add button
     DecisionTableViewController *mainView = [[DecisionTableViewController alloc] initWithStyle:UITableViewStylePlain];
-    [mainView.navigationItem setTitle:@"Decisions"];
+
+    
 
     
     // set nav bar root view controller
+    
     self.navController = [[UINavigationController alloc] initWithRootViewController:mainView];
+    [self.navController.navigationBar setBackgroundColor:redTransparent];
+    [self.navController.navigationBar setBarTintColor:redTransparent];
+
+    
+    self.navController.navigationBar.tintColor = titleColor;
     
     // set application root view controller
     [self.window setRootViewController:self.navController];
@@ -61,6 +74,7 @@
 {
     // Saves changes in the application's managed object context before the application terminates.
     [self saveContext];
+    [Database cleanUpDatabaseForQuit];
 }
 
 - (void)saveContext

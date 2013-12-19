@@ -23,6 +23,39 @@
     return self;
 }
 
+- (void)resetStats
+{
+    self.averageWeight = 0;
+    self.weights = [[NSMutableArray alloc] init];
+    self.comparedWith = [[NSMutableArray alloc] init];
+    
+}
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.title forKey:@"title"];
+    [aCoder encodeObject:self.weights forKey:@"weights"];
+    [aCoder encodeObject:self.comparedWith forKey:@"comparedWith"];
+    [aCoder encodeFloat:self.averageWeight forKey:@"averageWeight"];
+    [aCoder encodeBool:self.isPro forKey:@"isPro"];
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super init]) {
+        
+        self.title = [aDecoder decodeObjectForKey:@"title"];
+        self.weights = [aDecoder decodeObjectForKey:@"weights"];
+        self.comparedWith = [aDecoder decodeObjectForKey:@"comparedWith"];
+        self.averageWeight = [aDecoder decodeFloatForKey:@"averageWeight"];
+        self.isPro = [aDecoder decodeBoolForKey:@"isPro"];
+
+        
+        
+    }
+    return self;
+}
+
+
 -(BOOL)alreadyComparedWithFactorAtIndex:(NSNumber *)other
 {
     //NSLog(@"B value: %d",other.intValue);
