@@ -20,12 +20,14 @@
     return self;
 }
 
-
-
--(NSMutableArray *)inOrderCompsGeneratorWithArrayA:(NSArray *)A andArrayB:(NSArray *)B
+-(NSMutableArray *)inputOrderCompsGenerator
 {
-    int numOfFactorsA = self.choiceA.factors.count;
-    int numOfFactorsB = self.choiceB.factors.count;
+    
+    NSMutableArray * A = [self.choiceA.factors mutableCopy];
+    NSMutableArray * B = [self.choiceB.factors mutableCopy];
+    
+    int numOfFactorsA = (int)self.choiceA.factors.count;
+    int numOfFactorsB = (int)self.choiceB.factors.count;
     int min = MIN(numOfFactorsA, numOfFactorsB);
     int max = MAX(numOfFactorsA, numOfFactorsB);
     
@@ -34,113 +36,205 @@
     //comparing A's ith factor with B's ith factor
     for (int i = 0; i < min; i++)
     {
-
         Comparison * comp = [[Comparison alloc]initWithFactorA:A[i] andFactorB:B[i]];
         [comparisons addObject:comp];
-          [[A[i] comparedWith] addObject:[NSNumber numberWithInt:i]];
-        [[B[i] comparedWith] addObject:[NSNumber numberWithInt:i]];
-
-        
+        [[A[i] comparedWith] addObject:B[i]];
+        [[B[i] comparedWith] addObject:A[i]];
     }
     
     //compare the factors that are left with randomly chosen factors
     for (int i = min; i < max; i++)
     {
         Comparison * comp;
+        int randomIndex = arc4random_uniform(min);
         if (numOfFactorsA < numOfFactorsB)
         {
-            int randomIndex = arc4random_uniform(min);
             comp = [[Comparison alloc]initWithFactorA:A[randomIndex] andFactorB:B[i]];
-            [[A[randomIndex] comparedWith] addObject:[NSNumber numberWithInt:i]];
-            [[B[i] comparedWith] addObject:[NSNumber numberWithInt:randomIndex]];
+            [[A[randomIndex] comparedWith] addObject:A[i]];
+            [[B[i] comparedWith] addObject:A[randomIndex]];
         }
         else
         {
-            int randomIndex = arc4random_uniform(min);
             comp = [[Comparison alloc]initWithFactorA:A[i] andFactorB:B[randomIndex]];
-            
-            [[A[i] comparedWith] addObject:[NSNumber numberWithInt:randomIndex]];
-            [[B[randomIndex] comparedWith] addObject:[NSNumber numberWithInt:i]];
+            [[A[i] comparedWith] addObject:B[randomIndex]];
+            [[B[randomIndex] comparedWith] addObject:A[i]];
             
         }
         [comparisons addObject:comp];
         
     }
     
+    self.decision.round = 1;
     return comparisons;
+
+}
+
+-(NSMutableArray *)inOrderCompsGeneratorWithArrayA:(NSMutableArray *)A andArrayB:(NSMutableArray *)B
+{
+    
+    NSMutableArray *comparisons = [[NSMutableArray alloc]init];
+    
+    
+    if (A.count == 0 && B.count == 0)
+    {
+        //NSLog(@"num of comparisons generated: %d",comparisons.count);
+         return comparisons;
+    }
+    else if (A.count == 0)
+    {
+        for (int i = 0; i < B.count; i++)
+        {
+            Factor * factorA = [self generateUniqueRandomFactorforFactor:B[i] inArray:self.choiceA.factors];
+            Comparison * comp = [[Comparison alloc]initWithFactorA:factorA andFactorB:B[i]];
+            
+            [[factorA comparedWith] addObject:B[i]];
+            [[B[i] comparedWith] addObject:factorA];
+            [comparisons addObject:comp];
+        }
+        return comparisons;
+    }
+    else if (B.count == 0)
+    {
+        for (int i = 0; i < A.count; i++)
+        {
+            Factor * factorB = [self generateUniqueRandomFactorforFactor:A[i] inArray:self.choiceB.factors];
+            Comparison * comp = [[Comparison alloc]initWithFactorA:A[i] andFactorB:factorB];
+            [[factorB comparedWith] addObject:A[i]];
+            [[A[i] comparedWith] addObject:factorB];
+            [comparisons addObject:comp];
+        }
+        return comparisons;
+
+    }
+    else
+    {
+        if ([A[0] alreadyComparedWithFactor:B[0]]== NO) {
+            Comparison * comp = [[Comparison alloc]initWithFactorA:A[0] andFactorB:B[0]];
+            [[A[0] comparedWith] addObject:B[0]];
+            [[B[0] comparedWith] addObject:A[0]];
+            [comparisons addObject:comp];
+        }
+
+        //recursively generate comparisons,skip repeated ones (***not ideal)
+        [A removeObjectAtIndex:0];
+        [B removeObjectAtIndex:0];
+        [comparisons addObjectsFromArray:[self inOrderCompsGeneratorWithArrayA:A andArrayB:B]];
+
+        return comparisons;
+ 
+    }
+}
+
+
+
+
+//can move to factor
+-(Factor *)generateUniqueRandomFactorforFactor:(Factor *)factor inArray:(NSMutableArray *)targetFactors
+{
+    int randomIndex = arc4random_uniform(targetFactors.count);
+    
+    while ([factor alreadyComparedWithFactor:targetFactors[randomIndex]]) {
+        randomIndex = arc4random_uniform(targetFactors.count);
+    }
+    return targetFactors[randomIndex];
 }
 
 
 -(NSMutableArray *)randomCompsGenerator
 {
-    int numOfFactorsA = self.choiceA.factors.count;
-    int numOfFactorsB = self.choiceB.factors.count;
-    int max = MAX(numOfFactorsA, numOfFactorsB);
-    NSMutableArray * A = [[NSMutableArray alloc]initWithArray:self.choiceA.factors copyItems:YES];
-    NSMutableArray * B = [[NSMutableArray alloc]initWithArray:self.choiceB.factors copyItems:YES];
+    int numOfFactorsA = (int)self.choiceA.factors.count;
+    int numOfFactorsB = (int)self.choiceB.factors.count;
+    
+    int max;
+    int min;
+    NSMutableArray * baseFactors;
+    NSMutableArray * targetFactors;
+    
+    
+    if (numOfFactorsA > numOfFactorsB)
+    {
+        max = numOfFactorsA;
+        min = numOfFactorsB;
+        baseFactors = [self.choiceA.factors mutableCopy];
+        targetFactors = [self.choiceB.factors mutableCopy];
+    }
+    else
+    {
+        max = numOfFactorsB;
+        min = numOfFactorsA;
+        baseFactors = [self.choiceB.factors mutableCopy];
+        targetFactors = [self.choiceA.factors mutableCopy];
+        
+    }
 
     NSMutableArray * comparisons = [[NSMutableArray alloc]init];
     
     for (int i = 0; i < max; i++)
     {
-        if (A.count == 0)
-            A = [[NSMutableArray alloc]initWithArray:self.choiceA.factors copyItems:YES];
-        if (B.count == 0)
-            B = [[NSMutableArray alloc]initWithArray:self.choiceB.factors copyItems:YES];
+        //only generate if not already compared with all target factors
+        if ([baseFactors[i] comparedWith].count < targetFactors.count) {
+            int randomIndex = arc4random_uniform(min);
+            while ([baseFactors[i] alreadyComparedWithFactor:targetFactors[randomIndex]]) {
+                randomIndex = arc4random_uniform(min);
+            }
+            Comparison * uniqueComp = [[Comparison alloc]initWithFactorA:baseFactors[i] andFactorB:targetFactors[randomIndex]];
+            [[baseFactors[i] comparedWith] addObject:targetFactors[randomIndex]];
+            [[targetFactors[randomIndex] comparedWith] addObject:baseFactors[i]];
+            [comparisons addObject:uniqueComp];
+            
+        }
         
-        Comparison * comp = [self singleRandomCompGeneratorWithAArray:A andBArray:B];
-        [comparisons addObject:comp];
-        [A removeObjectAtIndex:comp.factorAIndex];
-        [B removeObjectAtIndex:comp.factorBIndex];
-        self.randomCount = 0;
-        
-
     }
     
+    
+    self.decision.round = 3;
     return comparisons;
     
+    
+    
 }
+
 
 
 -(NSMutableArray *)currentWeightRankingCompsGenerator
 {
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"averageWeight"
                                                  ascending:NO];
-    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-    NSArray *sortedA = [self.choiceA.factors sortedArrayUsingDescriptors:sortDescriptors];
-    NSArray *sortedB = [self.choiceB.factors sortedArrayUsingDescriptors:sortDescriptors];
+    NSMutableArray *sortDescriptors = [NSMutableArray arrayWithObject:sortDescriptor];
     
-    return [self inOrderCompsGeneratorWithArrayA:sortedA andArrayB:sortedB];
+    NSMutableArray * A = [self.choiceA.factors mutableCopy];
+    NSMutableArray * B = [self.choiceB.factors mutableCopy];
+
+    [A sortUsingDescriptors:sortDescriptors];
+    [B sortUsingDescriptors:sortDescriptors];
+    
+    
+    self.decision.round = 2;
+    return [self inOrderCompsGeneratorWithArrayA:A andArrayB:B];
     
 }
 
 
+/*
 -(Comparison *)singleRandomCompGeneratorWithAArray:(NSMutableArray *)A andBArray:(NSMutableArray *)B
 {
-    
-    //NSLog(@"a count: %d", A.count);
-    //NSLog(@"b count: %d", B.count);
 
-    
     int randomIndexA = arc4random_uniform(A.count);
     int randomIndexB = arc4random_uniform(B.count);
-    
-    //NSLog(@"random A: %d",randomIndexA);
-    //NSLog(@"random B: %d",randomIndexB);
-    
     // how should i handle the case when the items left have already compared with each other
     // currently if have to repeat, let it repeat *** not ideal
-    if ([self.choiceA.factors[randomIndexA] alreadyComparedWithFactorAtIndex:[NSNumber numberWithInt:randomIndexB]] && self.randomCount <=MAX(A.count,B.count))
+    if ([self.choiceA.factors[randomIndexA] alreadyComparedWithFactor:self.choiceB.factors[randomIndexB]] && self.randomCount <=MAX(A.count,B.count))
     {
         self.randomCount+=1;
-        NSLog(@"shuffle again: %d",self.randomCount);
-        return [self singleRandomCompGeneratorWithAArray:A andBArray:B];
+        //NSLog(@"shuffle again: %d",self.randomCount);
+        
+        return [self singleRandomCompGeneratorWithAArray:self.choiceA.factors andBArray:self.choiceB.factors];
 
     }
     else
     {
-        [[self.choiceA.factors[randomIndexA] comparedWith] addObject:[NSNumber numberWithInt:randomIndexB]];
-        [[self.choiceB.factors[randomIndexB] comparedWith] addObject:[NSNumber numberWithInt:randomIndexA]];
+        [[self.choiceA.factors[randomIndexA] comparedWith] addObject:self.choiceB.factors[randomIndexB]];
+        [[self.choiceB.factors[randomIndexB] comparedWith] addObject:self.choiceA.factors[randomIndexA]];
         return [[Comparison alloc]initWithFactorA:self.choiceA.factors[randomIndexA]
                                          andIndex:randomIndexA
                                        andFactorB:self.choiceB.factors[randomIndexB]
@@ -149,5 +243,7 @@
     
 }
 
+
+*/
 
 @end

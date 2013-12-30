@@ -95,8 +95,6 @@
     self.nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.nextButton setFrame:CGRectMake((320-88)/2, self.view.frame.size.height-145, 88, 20)];
     [self.nextButton setBackgroundImage:[UIImage imageNamed:@"confirm.png"] forState:UIControlStateNormal];
-
-    
     [self.nextButton addTarget:self action:@selector(nextComparison) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.nextButton];
     
@@ -110,9 +108,16 @@
     
     self.numOfCompPerRound = MAX(self.choiceA.factors.count, self.choiceB.factors.count);
     self.numOfCompsDone = 0;
+        
+    //NSMutableArray * A = [self.choiceA.factors mutableCopy];
+    //NSMutableArray * B = [self.choiceB.factors mutableCopy];
+
     
-    self.comparisons = [self.comparisonMaker inOrderCompsGeneratorWithArrayA:self.choiceA.factors andArrayB:self.choiceB.factors];
-    self.currentComparison = self.comparisons[self.numOfCompsDone];
+    
+    if (!self.decision.comparisons || self.decision.comparisons.count == 0)
+        self.decision.comparisons = [self.comparisonMaker inputOrderCompsGenerator];
+    
+    self.currentComparison = self.decision.comparisons[self.numOfCompsDone];
     
     [self updateLabels];
     
@@ -124,8 +129,11 @@
 {
     self.numOfCompsDone = 0;
     
-    self.comparisons = [self.comparisonMaker inOrderCompsGeneratorWithArrayA:self.choiceA.factors andArrayB:self.choiceB.factors];
-    self.currentComparison = self.comparisons[self.numOfCompsDone];
+    //NSMutableArray * A = [self.choiceA.factors mutableCopy];
+    //NSMutableArray * B = [self.choiceB.factors mutableCopy];
+
+    self.decision.comparisons = [self.comparisonMaker inputOrderCompsGenerator];
+    self.currentComparison = self.decision.comparisons[self.numOfCompsDone];
     self.nextButton.enabled = YES;
     
     [self updateLabels];
@@ -137,7 +145,12 @@
     {
         self.currentComparison.factorAWeight += 10;
         self.currentComparison.factorBWeight -= 10;
-        [self.bubbles setUpWithItemALabel:self.currentComparison.factorA.title andASize:self.currentComparison.factorAWeight andItemBLabel:self.currentComparison.factorB.title andBSize:self.currentComparison.factorBWeight andShouldDisplaySize:YES];
+        [self.bubbles setUpWithItemALabel:self.currentComparison.factorA.title
+                                 andASize:self.currentComparison.factorAWeight
+                                 andisPro:self.currentComparison.factorA.isPro
+                            andItemBLabel:self.currentComparison.factorB.title
+                                 andBSize:self.currentComparison.factorBWeight
+                                 andisPro:self.currentComparison.factorB.isPro andShouldDisplaySize:YES];
         [self.bubbles setNeedsDisplay];
     }
     
@@ -155,7 +168,12 @@
         self.currentComparison.factorAWeight -= 10;
         self.currentComparison.factorBWeight += 10;
         
-        [self.bubbles setUpWithItemALabel:self.currentComparison.factorA.title andASize:self.currentComparison.factorAWeight andItemBLabel:self.currentComparison.factorB.title andBSize:self.currentComparison.factorBWeight andShouldDisplaySize:YES];
+        [self.bubbles setUpWithItemALabel:self.currentComparison.factorA.title
+                                 andASize:self.currentComparison.factorAWeight
+                                 andisPro:self.currentComparison.factorA.isPro
+                            andItemBLabel:self.currentComparison.factorB.title
+                                 andBSize:self.currentComparison.factorBWeight
+                                 andisPro:self.currentComparison.factorB.isPro andShouldDisplaySize:YES];
         [self.bubbles setNeedsDisplay];
     }
     
@@ -172,8 +190,10 @@
 {
     //record current comp's information
     self.numOfCompsDone +=1;
+    //[self.decision addComparison:self.currentComparison];
     [self.currentComparison.factorA.weights addObject:[NSNumber numberWithInt:self.currentComparison.factorAWeight]];
     [self.currentComparison.factorB.weights addObject:[NSNumber numberWithInt:self.currentComparison.factorBWeight]];
+    
     [self.currentComparison.factorA updateAverageWeight];
     [self.currentComparison.factorB updateAverageWeight];
     [self.decision updateScore];
@@ -187,22 +207,41 @@
     }
     else
     {
+        NSLog(@"current round: %d",self.decision.round);
+        
+        if (self.numOfCompsDone == self.decision.comparisons.count) {
+            if (self.decision.round == 1)
+                [self.decision.comparisons addObjectsFromArray:[self.comparisonMaker currentWeightRankingCompsGenerator]];
+            else if (self.decision.round >= 2)
+                [self.decision.comparisons addObjectsFromArray:[self.comparisonMaker randomCompsGenerator]];
+            
+        }
+        
+        self.currentComparison = self.decision.comparisons[self.numOfCompsDone];
+        [self updateLabels];
+        
+
+/*
         if (self.numOfCompsDone % self.numOfCompPerRound == 0)
         {
             //finished the first round
             if (self.numOfCompsDone == self.numOfCompPerRound)
             {
-                [self.comparisons addObjectsFromArray:[self.comparisonMaker currentWeightRankingCompsGenerator]];
+                [self.decision.comparisons addObjectsFromArray:[self.comparisonMaker currentWeightRankingCompsGenerator]];
+                
             }
             else
             {
-                [self.comparisons addObjectsFromArray:[self.comparisonMaker randomCompsGenerator]];
+                [self.decision.comparisons addObjectsFromArray:[self.comparisonMaker randomCompsGenerator]];
                 
             }
         }
         
-        self.currentComparison = self.comparisons[self.numOfCompsDone];
-        [self updateLabels];
+        if (self.numOfCompsDone == self.decision.comparisons.count) {
+            [self.decision.comparisons addObjectsFromArray:[self.comparisonMaker randomCompsGenerator]];
+        }
+*/
+
         
     }
     
@@ -251,18 +290,6 @@
 
 -(BOOL)shouldEndComparison
 {
-    // run out of comparisons
-    if (self.numOfCompsDone == self.choiceA.factors.count * self.choiceB.factors.count)
-    {
-        NSLog(@"run out of comparisons");
-        self.alertView = [[UIAlertView alloc]initWithTitle:@"Ready for a Decision!" message:@"You have compared all of your Pros and Cons" delegate:self cancelButtonTitle:nil otherButtonTitles:@"See Result",nil];
-        [self.view addSubview:self.alertView];
-        
-        self.nextButton.enabled = NO;
-        
-        return YES;
-        
-    }
     // enough comparisons (to be determined) ***
     if (self.numOfCompsDone == 3*MAX(self.choiceA.factors.count,self.choiceB.factors.count))
     {
@@ -275,6 +302,19 @@
         return YES;
         
     }
+    // run out of comparisons
+    else if (self.numOfCompsDone == self.choiceA.factors.count * self.choiceB.factors.count)
+    {
+        NSLog(@"run out of comparisons");
+        self.alertView = [[UIAlertView alloc]initWithTitle:@"Ready for a Decision!" message:@"You have compared all of your Pros and Cons" delegate:self cancelButtonTitle:nil otherButtonTitles:@"See Result",nil];
+        [self.view addSubview:self.alertView];
+        
+        self.nextButton.enabled = NO;
+        
+        return YES;
+        
+    }
+
     //NSLog(@"difference: %f", abs(self.decision.Arate-self.decision.Brate));
     // if theres a huge difference in score
     else if (self.numOfCompsDone % self.numOfCompPerRound == 0 &&
@@ -293,7 +333,12 @@
 - (void)updateLabels
 {
     
-    [self.bubbles setUpWithItemALabel:self.currentComparison.factorA.title andASize:self.currentComparison.factorAWeight andItemBLabel:self.currentComparison.factorB.title andBSize:self.currentComparison.factorBWeight andShouldDisplaySize:YES];
+    [self.bubbles setUpWithItemALabel:self.currentComparison.factorA.title
+                             andASize:self.currentComparison.factorAWeight
+                             andisPro:self.currentComparison.factorA.isPro
+                        andItemBLabel:self.currentComparison.factorB.title
+                             andBSize:self.currentComparison.factorBWeight
+                             andisPro:self.currentComparison.factorB.isPro andShouldDisplaySize:YES];
     self.factorAWeight = self.currentComparison.factorAWeight;
     self.factorBWeight = self.currentComparison.factorBWeight;
     

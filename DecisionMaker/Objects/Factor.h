@@ -15,9 +15,10 @@
 @property NSMutableArray * comparedWith;
 @property float averageWeight;
 @property BOOL isPro;
+//@property int uniqueID;
 
 -(id)initWithTitle:(NSString *)title andIsPro:(BOOL)isPro;
--(BOOL)alreadyComparedWithFactorAtIndex:(NSNumber *)other;
+-(BOOL)alreadyComparedWithFactor:(Factor *)otherFactor;
 -(void)updateAverageWeight;
 - (void)resetStats;
 

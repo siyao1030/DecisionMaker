@@ -37,7 +37,6 @@
 @property int numOfCompPerRound;
 @property int numOfCompsDone;
 
-@property NSMutableArray * comparisons;
 @property Comparison *currentComparison;
 @property ComparisonMaker * comparisonMaker;
 

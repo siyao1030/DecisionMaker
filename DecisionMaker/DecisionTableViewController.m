@@ -19,7 +19,6 @@
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
-        //self.decisions = [[NSMutableArray alloc] init];
         self.view.backgroundColor = bgColor;
         self.decisions = [Database fetchAllItems];
         

@@ -13,8 +13,10 @@
 
 @property int sizeA;
 @property NSString * labelA;
+@property int isProA;
 @property int sizeB;
 @property NSString * labelB;
+@property int isProB;
 @property BOOL displaySize;
 
 @property id target;
@@ -22,10 +24,10 @@
 @property SEL increaseB;
 
 
-//@property UILabel * label;
-//@property UILabel * sizeLabel;
 
 -(void)setUpWithSiza:(int)size andLabel:(NSString *)label andChoice:(int)index andShouldDisplaySize:(BOOL)shouldDisplay;
 
 -(void)setUpWithItemALabel:(NSString *)labelA andASize:(int)sizeA andItemBLabel: (NSString *)labelB andBSize:(int)sizeB andShouldDisplaySize:(BOOL)shouldDisplay;
+
+-(void)setUpWithItemALabel:(NSString *)labelA andASize:(int)sizeA andisPro:(BOOL)isProA andItemBLabel: (NSString *)labelB andBSize:(int)sizeB  andisPro:(BOOL)isProB andShouldDisplaySize:(BOOL)shouldDisplay;
 @end

@@ -117,8 +117,8 @@ static sqlite3_stmt *itemsCount;
 
 
         NSData *tempdata = [[NSData alloc] initWithBytes:ptr length:size];
-
         Decision *temp = [NSKeyedUnarchiver unarchiveObjectWithData:tempdata];
+        
         temp.rowid = sqlite3_column_int(fetchItem, 0);
 
         [ret insertObject:temp atIndex:0];
@@ -146,19 +146,6 @@ static sqlite3_stmt *itemsCount;
     
     int rowid = (int)sqlite3_last_insert_rowid(db);
 
-    /*
-    //getting the rowID
-    NSString * findRow = [NSString stringWithFormat:@"SELECT * FROM decisions WHERE title='%@'",decision.title];
-    const char *findRowIdString = [findRow UTF8String];
-    
-    
-    if (sqlite3_prepare_v2(db, findRowIdString, -1, &getRowID, NULL) != SQLITE_OK) {
-        NSLog(@"ERROR: failed to prepare get rowid statement");
-        NSLog(@"%s Prepare failure '%s' (%1d)", __FUNCTION__, sqlite3_errmsg(db), sqlite3_errcode(db));
-    }
-    int rowid = sqlite3_column_int(getRowID, 0);
-    NSLog(@"rowid in saving: %d", rowid);
-     */
     return rowid;
 }
 
@@ -189,7 +176,6 @@ static sqlite3_stmt *itemsCount;
 {
     // bind data to the statement
     NSLog(@"stage: %d",decision.stage);
-   // NSLog(@"nums of pros cons %d", [[decision.choices objectAtIndex:0].factors.count]);
     
     NSData * decisionData = [NSKeyedArchiver archivedDataWithRootObject:decision];
     sqlite3_bind_blob (replaceItem, 1, [decisionData bytes], [decisionData length], SQLITE_TRANSIENT);

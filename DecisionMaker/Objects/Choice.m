@@ -29,8 +29,6 @@
 {
     [aCoder encodeObject:self.title forKey:@"title"];
     [aCoder encodeObject:self.factors forKey:@"factors"];
-
-    
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder

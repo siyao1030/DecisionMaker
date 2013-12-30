@@ -12,10 +12,6 @@
 
 @interface CreateDecisionViewController : UIViewController
 
-//@property (weak, nonatomic) IBOutlet UITextField *decisionTitle;
-
-//@property (weak, nonatomic) IBOutlet UITextField *choiceA;
-//@property (weak, nonatomic) IBOutlet UITextField *choiceB;
 
 @property UITextField *decisionTitle;
 

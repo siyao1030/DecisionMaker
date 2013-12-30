@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Decision.h"
+#import "Factor.h"
 
 
 @interface Comparison : NSObject
@@ -24,5 +24,10 @@
 -(id)initWithFactorA:(Factor *)factorA andFactorB:(Factor *)factorB;
 
 -(id)initWithFactorA:(Factor *)factorA andIndex:(int)a andFactorB:(Factor *)factorB andindex:(int)b;
+
+- (void)resetStats;
+
+- (void)encodeWithCoder:(NSCoder *)aCoder;
+- (id)initWithCoder:(NSCoder *)aDecoder;
 
 @end

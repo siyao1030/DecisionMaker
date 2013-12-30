@@ -32,6 +32,32 @@
     return self;
 }
 
+- (void)resetStats
+{
+    [self.factorA resetStats];
+    [self.factorB resetStats];
+    self.factorAWeight = 50;
+    self.factorBWeight = 50;
+}
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.factorA forKey:@"factorA"];
+    [aCoder encodeObject:self.factorB forKey:@"factorB"];
+    [aCoder encodeFloat:self.factorAWeight forKey:@"factorAWeight"];
+    [aCoder encodeFloat:self.factorBWeight forKey:@"factorBWeight"];
+}
 
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super init]) {
+        
+        self.factorA = [aDecoder decodeObjectForKey:@"factorA"];
+        self.factorB = [aDecoder decodeObjectForKey:@"factorB"];
+        self.factorAWeight = [aDecoder decodeFloatForKey:@"factorAWeight"];
+        self.factorBWeight = [aDecoder decodeFloatForKey:@"factorBWeight"];
+        
+    }
+    return self;
+}
 
 @end

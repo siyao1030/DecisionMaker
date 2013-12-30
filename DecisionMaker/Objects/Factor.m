@@ -56,23 +56,25 @@
 }
 
 
--(BOOL)alreadyComparedWithFactorAtIndex:(NSNumber *)other
+
+-(BOOL)alreadyComparedWithFactor:(Factor *)otherFactor
 {
-    //NSLog(@"B value: %d",other.intValue);
-    for (NSNumber* i in self.comparedWith)
+    for (Factor * thisFactor in self.comparedWith)
     {
         //NSLog(@"A has already compared with: %d",i.intValue);
-        if (i.intValue == other.intValue)
+        if ([thisFactor.title isEqualToString:otherFactor.title])
             return YES;
     }
     return NO;
+    
 }
-
 -(void)updateAverageWeight
 {
     NSNumber *newWIndex = self.weights[self.weights.count-1];
+    
     self.averageWeight = (self.averageWeight * (self.weights.count-1) + newWIndex.doubleValue)/self.weights.count;
     
+    NSLog(@"new weight: %f", newWIndex.doubleValue);
     NSLog(@"average weight: %f", self.averageWeight);
     /*
     if (self.isPro)

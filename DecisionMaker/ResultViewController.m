@@ -52,12 +52,21 @@
     [self.view addSubview:self.bubbles];
     
     
-    self.resultLabel = [[UILabel alloc]initWithFrame:CGRectMake((320-180)/2, 40, 180, 30)];
-    [self.resultLabel setText:@"Your Heart Prefers"];
+    self.resultLabel = [[UILabel alloc]initWithFrame:CGRectMake((320-250)/2, 40, 250, 30)];
+    [self.resultLabel setText:@"Your Heart Belongs to"];
     [self.resultLabel setFont:[UIFont fontWithName: @"HelveticaNeue-Light"  size: 22]];
     [self.resultLabel setTextColor:redOpaque];
+    [self.resultLabel setTextAlignment:NSTextAlignmentCenter];
     
     [self.view addSubview:self.resultLabel];
+    
+    
+    self.analysisButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.analysisButton setFrame:CGRectMake((320-88)/2, self.view.frame.size.height-100, 88, 20)];
+    [self.analysisButton setTitle:@"See Why" forState:UIControlStateNormal];
+    //[self.analysisButton setBackgroundImage:[UIImage imageNamed:@"confirm.png"] forState:UIControlStateNormal];
+    [self.analysisButton addTarget:self action:@selector(seeAnalysis) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.analysisButton];
     
     self.endButton = [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(didPressDone)];
     
@@ -66,13 +75,20 @@
     [self.navigationItem setRightBarButtonItem:self.endButton animated:YES];
     [self.navigationItem setLeftBarButtonItem:decideAgainButton animated:YES];
     
+    
     return self;
+}
+
+-(void)seeAnalysis
+{
+    ResultAnalysisViewController * analysisView = [[ResultAnalysisViewController alloc]initWithDecision:self.decision];
+    [self.navigationController pushViewController:analysisView animated:YES];
+    
 }
 
 -(void)didPressDone
 {
     
-    NSLog(@"end of result, stage: %d, rowid: %d",self.decision.stage, self.decision.rowid);
     [Database replaceItemWithData:self.decision atRow:self.decision.rowid];
     
     // Decision table view reload

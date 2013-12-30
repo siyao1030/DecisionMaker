@@ -10,6 +10,7 @@
 #import "Decision.h"
 #import "BubbleView.h"
 #import "Database.h"
+#import "ResultAnalysisViewController.h"
 
 @interface ResultViewController : UIViewController
 
@@ -23,6 +24,8 @@
 @property UIBarButtonItem * endButton;
 @property UILabel * resultLabel;
 @property UILabel * winner;
+
+@property UIButton * analysisButton;
 
 -(id)initWithDecision:(Decision *)decision;
 

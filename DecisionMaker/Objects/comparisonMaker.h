@@ -20,9 +20,17 @@
 
 
 -(id)initWithDecision:(Decision *)decision;
--(NSMutableArray *)inOrderCompsGeneratorWithArrayA:(NSArray *)A andArrayB:(NSArray *)B;
+
+
+-(NSMutableArray *)inOrderCompsGeneratorWithArrayA:(NSMutableArray *)A andArrayB:(NSMutableArray *)B;
+
 -(NSMutableArray *)currentWeightRankingCompsGenerator;
+
 -(NSMutableArray *)randomCompsGenerator;
+
+-(NSMutableArray *)inputOrderCompsGenerator;
+
+//-(Comparison *)singleRandomCompGeneratorWithAArray:(NSMutableArray *)A andBArray:(NSMutableArray *)B;
 
 
 

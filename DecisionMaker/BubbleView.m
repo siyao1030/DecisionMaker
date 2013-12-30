@@ -48,9 +48,23 @@
     self.sizeB = sizeB;
     self.labelB= labelB;
     self.displaySize = shouldDisplay;
+    self.isProA = -1;
+    self.isProB = -1;
     
 }
 
+
+-(void)setUpWithItemALabel:(NSString *)labelA andASize:(int)sizeA andisPro:(BOOL)isProA andItemBLabel: (NSString *)labelB andBSize:(int)sizeB  andisPro:(BOOL)isProB andShouldDisplaySize:(BOOL)shouldDisplay
+{
+    self.sizeA = sizeA;
+    self.labelA= labelA;
+    self.isProA = isProA;
+    self.sizeB = sizeB;
+    self.labelB= labelB;
+    self.isProB = isProB;
+    self.displaySize = shouldDisplay;
+    
+}
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch = [touches anyObject];
@@ -84,17 +98,10 @@
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
+
+
 - (void)drawRect:(CGRect)rect
 {
-
-    /*
-    NSMutableParagraphStyle *textStyle = [[NSMutableParagraphStyle defaultParagraphStyle] mutableCopy];
-    textStyle.lineBreakMode = NSLineBreakByWordWrapping;
-    textStyle.alignment = NSTextAlignmentCenter;
-    
-    [sizeContent drawInRect:CGRectInset(ovalRect, 0, 10) withAttributes:@{NSFontAttributeName: [UIFont fontWithName: @"HelveticaNeue-Bold" size: [UIFont buttonFontSize]], NSLineBreakMode:NSLineBreakByWordWrapping, NSTextAlignment:NSTextAlignmentCenter}];
-    */
-
     
     //// Color Declarations
     UIColor* fillColor = [UIColor colorWithRed: 1 green: 1 blue: 1 alpha: 1];
@@ -106,16 +113,35 @@
     int diameterB = 170*(self.sizeB/100.0);
     int sizeFontA = 60*(self.sizeA/100.0);
     int sizeFontB = 60*(self.sizeB/100.0);
+    
+    if (diameterA < 17) {
+        diameterA = 17;
+        diameterB = 170*0.9;
+        sizeFontA = 6;
+        sizeFontB = 60*0.9;
+    }
+    if (diameterB < 17)
+    {
+        diameterA = 170*0.9;
+        diameterB = 17;
+        sizeFontA = 60*0.9;
+        sizeFontB = 6;
+    }
 
-    
-    
+
     
     //// Oval Drawing
     CGRect ovalRect = CGRectMake(160-diameterA/2, 200-diameterA, diameterA, diameterA);
     UIBezierPath* ovalPath = [UIBezierPath bezierPathWithOvalInRect: ovalRect];
-    [lightGreen setFill];
+    UIColor * colorGreen;
+    if (self.isProA == NO)
+        colorGreen = darkGreen;
+    else
+        colorGreen = lightGreen;
+    
+    [colorGreen setFill];
     [ovalPath fill];
-    [lightGreen setStroke];
+    [colorGreen setStroke];
     ovalPath.lineWidth = 0.5;
     [ovalPath stroke];
     [fillColor setFill];
@@ -136,9 +162,16 @@
     //// Oval 2 Drawing
     CGRect oval2Rect = CGRectMake(160-diameterB/2, 200, diameterB, diameterB);
     UIBezierPath* oval2Path = [UIBezierPath bezierPathWithOvalInRect: oval2Rect];
-    [lightOrange setFill];
+    
+    UIColor * colorOrange;
+    if (self.isProB == NO)
+        colorOrange = darkOrange;
+    else
+        colorOrange = lightOrange;
+    
+    [colorOrange setFill];
     [oval2Path fill];
-    [lightOrange setStroke];
+    [colorOrange setStroke];
     oval2Path.lineWidth = 0.5;
     [oval2Path stroke];
     [fillColor setFill];
