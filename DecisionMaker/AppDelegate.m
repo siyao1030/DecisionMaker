@@ -20,7 +20,6 @@
     [Database initDatabase];
     
     [[UIBarButtonItem appearance] setTintColor:titleColor];
-    
 
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

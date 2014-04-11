@@ -37,8 +37,11 @@
 @property NSString *title;
 @property NSMutableArray *choices;
 @property NSMutableArray *comparisons;
-@property int Ascore;
-@property int Bscore;
+@property float AcontributionScore;
+@property float BcontributionScore;
+
+@property float Ascore;
+@property float Bscore;
 @property float Arate;
 @property float Brate;
 @property int AResult;
@@ -52,9 +55,13 @@
 
 - (void)updateScore;
 
-- (void)updateResult;
+-(void)updateContributionScore;
+
+-(void)updateNetworkScore;
 
 - (void)resetStats;
+
+-(void)convergeNetworkScore;
 
 -(void)addComparison:(Comparison *)comparison;
 

@@ -13,6 +13,7 @@
 #import "ResultViewController.h"
 #import "BubbleView.h"
 #import "Database.h"
+#import "ProgressView.h"
 
 
 @interface ComparisonViewController : UIViewController
@@ -20,6 +21,8 @@
 @property BubbleView * bubbles;
 @property UILabel * choiceALabel;
 @property UILabel * choiceBLabel;
+
+@property ProgressView * progressView;
 
 @property int factorAWeight;
 @property int factorBWeight;
@@ -35,7 +38,6 @@
 
 
 @property int numOfCompPerRound;
-@property int numOfCompsDone;
 
 @property Comparison *currentComparison;
 @property ComparisonMaker * comparisonMaker;

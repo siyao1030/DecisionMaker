@@ -1,18 +1,18 @@
 //
-//  ResultAnalysisViewController.m
+//  CompResultViewController.m
 //  DecisionMaker
 //
 //  Created by Siyao Clara Xie on 12/29/13.
 //  Copyright (c) 2013 Siyao Xie. All rights reserved.
 //
 
-#import "ResultAnalysisViewController.h"
+#import "CompResultViewController.h"
 
-@interface ResultAnalysisViewController ()
+@interface CompResultViewController ()
 
 @end
 
-@implementation ResultAnalysisViewController
+@implementation CompResultViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -25,23 +25,8 @@
 
 -(id)initWithDecision:(Decision *)decision
 {
-    self.tableView = [self makeTableView];
     self.decision = decision;
-    
-    // register the type of view to create for a table cell
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-//    self.tableView.rowHeight = 100;
-//    self.tableView.scrollEnabled = YES;
-//    self.tableView.showsVerticalScrollIndicator = YES;
-//    self.tableView.userInteractionEnabled = YES;
-//    self.tableView.bounces = YES;
-//    
-//    self.tableView.delegate = self;
-//    self.tableView.dataSource = self;
-//    self.tableView.backgroundColor = bgColor;
-    [self.view addSubview:self.tableView];
-    
-    
+
     
     return self;
     
@@ -50,9 +35,13 @@
 -(UITableView *)makeTableView
 {
     CGFloat x = 0;
-    CGFloat y = 0;
     CGFloat width = 320;
-    CGFloat height = self.view.frame.size.height-65;
+    CGFloat navBarHeight = self.navigationController.navigationBar.frame.size.height;
+    CGFloat tabBarHeight = self.tabBarController.tabBar.frame.size.height;
+    CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+    CGFloat y = navBarHeight+statusBarHeight;
+    CGFloat height = self.view.frame.size.height-navBarHeight-statusBarHeight-tabBarHeight;
+    
     CGRect tableFrame = CGRectMake(x, y, width, height);
     
     UITableView *tableView = [[UITableView alloc]initWithFrame:tableFrame style:UITableViewStylePlain];
@@ -68,7 +57,7 @@
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.backgroundColor = bgColor;
-    
+    tableView.allowsSelection = NO;
     tableView.separatorInset = UIEdgeInsetsMake(0, 10, 0, 10);
     return tableView;
 }
@@ -84,7 +73,7 @@
 {
     // Return the number of rows in the section.
 
-    return ([self.decision.comparisons count]);
+    return self.decision.numOfCompsDone;
     
 }
 
@@ -173,6 +162,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.tableView = [self makeTableView];
+    
+    // register the type of view to create for a table cell
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    
+    [self.view addSubview:self.tableView];
 	// Do any additional setup after loading the view.
 }
 

@@ -10,6 +10,7 @@
 #import "Decision.h"
 #import "CreateDecisionViewController.h"
 #import "AddProsConsViewController.h"
+#import "EnterProsConsViewController.h"
 #import "ComparisonViewController.h"
 #import "ResultViewController.h"
 #import "Database.h"

@@ -175,16 +175,12 @@ static sqlite3_stmt *itemsCount;
 + (void)replaceItemWithData:(Decision *)decision atRow: (int)rid
 {
     // bind data to the statement
-    NSLog(@"stage: %d",decision.stage);
     
     NSData * decisionData = [NSKeyedArchiver archivedDataWithRootObject:decision];
     sqlite3_bind_blob (replaceItem, 1, [decisionData bytes], [decisionData length], SQLITE_TRANSIENT);
     sqlite3_bind_text(replaceItem, 2, [decision.title UTF8String], -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(replaceItem, 3, rid);
-    NSLog(@"replacing %d",rid);
-    
-//    char* errmsg;
-//    sqlite3_exec(db, "COMMIT", NULL, NULL, &errmsg);
+
 
     int success = sqlite3_step(replaceItem);
     sqlite3_reset(replaceItem);

@@ -15,28 +15,6 @@
 @implementation ComparisonViewController
 
 
--(Decision *)jeffDecisionTest
-{
-    Choice *choiceA = [[Choice alloc]initWithTitle:@"Sandisk"];
-    Choice *choiceB = [[Choice alloc]initWithTitle:@"Qualcomm"];
-    
-    [choiceA addToFactors:[[Factor alloc]initWithTitle:@"Good position" andIsPro:YES]];
-    //[choiceA addToFactors:[[Factor alloc]initWithTitle:@"take class at stanford" andIsPro:YES]];
-    //[choiceA addToFactors:[[Factor alloc]initWithTitle:@"tech scene" andIsPro:YES]];
-    //[choiceA addToFactors:[[Factor alloc]initWithTitle:@"high living expense" andIsPro:NO]];
-    //[choiceA addToFactors:[[Factor alloc]initWithTitle:@"not very big company" andIsPro:YES]];
-    //[choiceA addToFactors:[[Factor alloc]initWithTitle:@"more friends in the area" andIsPro:YES]];
-    //[choiceA addToFactors:[[Factor alloc]initWithTitle:@"uncertain tech advantage" andIsPro:NO]];
-    
-    [choiceB addToFactors:[[Factor alloc]initWithTitle:@"company reputation" andIsPro:YES]];
-    //[choiceB addToFactors:[[Factor alloc]initWithTitle:@"company doing well" andIsPro:YES]];
-    //[choiceB addToFactors:[[Factor alloc]initWithTitle:@"SD good location" andIsPro:YES]];
-    //[choiceB addToFactors:[[Factor alloc]initWithTitle:@"product market&price" andIsPro:YES]];
-    //[choiceB addToFactors:[[Factor alloc]initWithTitle:@"too many indians" andIsPro:NO]];
-    
-    return [[Decision alloc]initWithChoiceA:choiceA andChoiceB:choiceB andTitle:@"Sandisk vs. Qualcomm"];
-
-}
 -(id)initWithDecision:(Decision *)decision
 {
     
@@ -92,9 +70,14 @@
     [self.view addSubview:self.nextButton];
     */
     
+    
+
+   
+    UIImage * confirmImage = [UIImage imageNamed:@"confirm.png"];
     self.nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.nextButton setFrame:CGRectMake((320-88)/2, self.view.frame.size.height-145, 88, 20)];
-    [self.nextButton setBackgroundImage:[UIImage imageNamed:@"confirm.png"] forState:UIControlStateNormal];
+    [self.nextButton setFrame:
+                       CGRectMake((self.view.frame.size.width-confirmImage.size.width)/2, self.view.frame.size.height-confirmImage.size.height-130, confirmImage.size.width, confirmImage.size.height)];
+    [self.nextButton setImage:confirmImage forState:UIControlStateNormal];
     [self.nextButton addTarget:self action:@selector(nextComparison) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.nextButton];
     
@@ -107,7 +90,6 @@
     self.comparisonMaker = [[ComparisonMaker alloc]initWithDecision:self.decision];
     
     self.numOfCompPerRound = MAX(self.choiceA.factors.count, self.choiceB.factors.count);
-    self.numOfCompsDone = 0;
         
     //NSMutableArray * A = [self.choiceA.factors mutableCopy];
     //NSMutableArray * B = [self.choiceB.factors mutableCopy];
@@ -117,7 +99,23 @@
     if (!self.decision.comparisons || self.decision.comparisons.count == 0)
         self.decision.comparisons = [self.comparisonMaker inputOrderCompsGenerator];
     
-    self.currentComparison = self.decision.comparisons[self.numOfCompsDone];
+
+    if (self.decision.numOfCompsDone < self.decision.comparisons.count)
+    {
+        self.currentComparison = self.decision.comparisons[self.decision.numOfCompsDone];
+    }
+    else
+    {
+        
+        self.currentComparison = self.decision.comparisons[0];
+    }
+    
+    
+    self.progressView = [[ProgressView alloc]initWithFrame:CGRectMake(0, 0, 320, 26)];
+    [self.progressView setUpWithDecision:self.decision];
+    [self.progressView setBackgroundColor:bgColor];
+    self.navigationController.navigationBar.clipsToBounds = YES;
+    [self.view addSubview:self.progressView];
     
     [self updateLabels];
     
@@ -127,13 +125,14 @@
 
 -(void)reload
 {
-    self.numOfCompsDone = 0;
+    self.decision.numOfCompsDone= 0;
     
     //NSMutableArray * A = [self.choiceA.factors mutableCopy];
     //NSMutableArray * B = [self.choiceB.factors mutableCopy];
 
-    self.decision.comparisons = [self.comparisonMaker inputOrderCompsGenerator];
-    self.currentComparison = self.decision.comparisons[self.numOfCompsDone];
+    // need to fixxxxx, this is right, since the comparisons are based on the first round
+    //self.decision.comparisons = [self.comparisonMaker inputOrderCompsGenerator];
+    self.currentComparison = self.decision.comparisons[self.decision.numOfCompsDone];
     self.nextButton.enabled = YES;
     
     [self updateLabels];
@@ -189,15 +188,34 @@
 -(void)nextComparison
 {
     //record current comp's information
-    self.numOfCompsDone +=1;
+    
+    self.decision.numOfCompsDone +=1;
+    [self.progressView setNeedsDisplay];
     //[self.decision addComparison:self.currentComparison];
     [self.currentComparison.factorA.weights addObject:[NSNumber numberWithInt:self.currentComparison.factorAWeight]];
     [self.currentComparison.factorB.weights addObject:[NSNumber numberWithInt:self.currentComparison.factorBWeight]];
     
+    NSArray * a = @[self.currentComparison.factorB,
+                    [NSNumber numberWithFloat: self.currentComparison.factorBWeight]];
+    NSArray * b = @[self.currentComparison.factorA,
+                    [NSNumber numberWithFloat: self.currentComparison.factorAWeight]];
+    
+    [self.currentComparison.factorA.comparedWith addObject:a];
+    [self.currentComparison.factorB.comparedWith addObject:b];
+    
+    
+    self.currentComparison.factorA.totalContribution+=self.currentComparison.factorBWeight;
+    self.currentComparison.factorB.totalContribution+=self.currentComparison.factorAWeight;
+    
     [self.currentComparison.factorA updateAverageWeight];
     [self.currentComparison.factorB updateAverageWeight];
-    [self.decision updateScore];
 
+
+    if (self.decision.numOfCompsDone % MAX(self.choiceA.factors.count,self.choiceB.factors.count) == 0)
+    {
+        [self.decision convergeNetworkScore];
+    }
+        
     
     //generate new comparisons if needed
     if ([self shouldEndComparison])
@@ -206,41 +224,47 @@
         [self.alertView show];
     }
     else
-    {
-        NSLog(@"current round: %d",self.decision.round);
-        
-        if (self.numOfCompsDone == self.decision.comparisons.count) {
+    {        
+        if (self.decision.numOfCompsDone == self.decision.comparisons.count) {
             if (self.decision.round == 1)
-                [self.decision.comparisons addObjectsFromArray:[self.comparisonMaker currentWeightRankingCompsGenerator]];
-            else if (self.decision.round >= 2)
-                [self.decision.comparisons addObjectsFromArray:[self.comparisonMaker randomCompsGenerator]];
-            
-        }
-        
-        self.currentComparison = self.decision.comparisons[self.numOfCompsDone];
-        [self updateLabels];
-        
-
-/*
-        if (self.numOfCompsDone % self.numOfCompPerRound == 0)
-        {
-            //finished the first round
-            if (self.numOfCompsDone == self.numOfCompPerRound)
             {
-                [self.decision.comparisons addObjectsFromArray:[self.comparisonMaker currentWeightRankingCompsGenerator]];
+                NSMutableArray * newComps = [self.comparisonMaker currentWeightRankingCompsGenerator];
                 
+                if (newComps.count!=0)
+                {
+                    [self.decision.comparisons addObjectsFromArray:newComps];
+                    NSLog(@"pushing currentWeightComps: %lu", (unsigned long)newComps.count);
+                }
+                else
+                {
+                    newComps = [self.comparisonMaker randomCompsGenerator];
+                    [self.decision.comparisons addObjectsFromArray:newComps];
+                    self.decision.round++;
+                }
+            }
+            else if (self.decision.round == 2)
+            {
+                NSMutableArray * newComps = [self.comparisonMaker randomCompsGenerator];
+                [self.decision.comparisons addObjectsFromArray:newComps];
             }
             else
             {
-                [self.decision.comparisons addObjectsFromArray:[self.comparisonMaker randomCompsGenerator]];
-                
+                NSMutableArray * newComps = [self.comparisonMaker restCompsGenerator];
+                [self.decision.comparisons addObjectsFromArray:newComps];
             }
+            
+            
+            
+            
         }
         
-        if (self.numOfCompsDone == self.decision.comparisons.count) {
-            [self.decision.comparisons addObjectsFromArray:[self.comparisonMaker randomCompsGenerator]];
-        }
-*/
+        self.currentComparison = self.decision.comparisons[self.decision.numOfCompsDone];
+        [self updateLabels];
+        
+        
+        
+
+        
 
         
     }
@@ -255,7 +279,7 @@
         if (buttonIndex == 0)
         {
             self.decision.stage = ResultStage;
-            [self.decision updateResult];
+            [self.decision convergeNetworkScore];
             [Database replaceItemWithData:self.decision atRow:self.decision.rowid];
             
             // Decision table view reload
@@ -272,13 +296,11 @@
         if (buttonIndex == 1)
         {
             self.decision.stage = ResultStage;
-            [self.decision updateResult];
+
+            [self.decision convergeNetworkScore];
 
             [Database replaceItemWithData:self.decision atRow:self.decision.rowid];
-            
-            // Decision table view reload
-            [[self.navigationController.viewControllers objectAtIndex:0] reload];
-            
+
             ResultViewController * resultView = [[ResultViewController alloc]initWithDecision:self.decision];
             
             [self.navigationController pushViewController:resultView animated:YES];
@@ -290,8 +312,9 @@
 
 -(BOOL)shouldEndComparison
 {
+    
     // enough comparisons (to be determined) ***
-    if (self.numOfCompsDone == 3*MAX(self.choiceA.factors.count,self.choiceB.factors.count))
+    if (self.decision.numOfCompsDone == 3*MAX(self.choiceA.factors.count,self.choiceB.factors.count))
     {
         NSLog(@"After 3 rounds of comparisons");
         self.alertView = [[UIAlertView alloc]initWithTitle:@"Ready for a Decision!" message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"See Result",nil];
@@ -302,8 +325,9 @@
         return YES;
         
     }
+    
     // run out of comparisons
-    else if (self.numOfCompsDone == self.choiceA.factors.count * self.choiceB.factors.count)
+    else if (self.decision.numOfCompsDone == self.choiceA.factors.count * self.choiceB.factors.count)
     {
         NSLog(@"run out of comparisons");
         self.alertView = [[UIAlertView alloc]initWithTitle:@"Ready for a Decision!" message:@"You have compared all of your Pros and Cons" delegate:self cancelButtonTitle:nil otherButtonTitles:@"See Result",nil];
@@ -314,19 +338,18 @@
         return YES;
         
     }
-
-    //NSLog(@"difference: %f", abs(self.decision.Arate-self.decision.Brate));
-    // if theres a huge difference in score
-    else if (self.numOfCompsDone % self.numOfCompPerRound == 0 &&
-             abs((self.decision.Arate-self.decision.Brate)*100)>= 50)
+    /*
+    // if theres a huge difference in score *** huge difference to be determined
+    else if (self.decision.numOfCompsDone % MAX(self.choiceA.factors.count,self.choiceB.factors.count) == 0 &&
+             abs(self.decision.Arate-self.decision.Brate)>= 60)
     {
-        NSLog(@"enough comparisons");
         self.alertView = [[UIAlertView alloc]initWithTitle:@"Ready for a Decision!" message:@"You have indicated a strong preference." delegate:self cancelButtonTitle:@"Compare More" otherButtonTitles:@"See Result", nil];
         [self.view addSubview:self.alertView];
         
         
         return YES;
     }
+     */
     
     return NO;
 }
@@ -343,6 +366,7 @@
     self.factorBWeight = self.currentComparison.factorBWeight;
     
     [self.bubbles setNeedsDisplay];
+    [self.progressView setNeedsDisplay];
 
 }
 
@@ -353,6 +377,13 @@
         NSLog(@"press back in comparisons: %d",self.decision.stage);
     }
     [super viewWillDisappear:animated];
+}
+                         
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    
 }
 
 

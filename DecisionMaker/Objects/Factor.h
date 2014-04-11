@@ -14,8 +14,11 @@
 @property NSMutableArray * weights;
 @property NSMutableArray * comparedWith;
 @property float averageWeight;
+@property float score;
+@property float tempScore;
+@property float finalScore;
 @property BOOL isPro;
-//@property int uniqueID;
+@property float totalContribution;
 
 -(id)initWithTitle:(NSString *)title andIsPro:(BOOL)isPro;
 -(BOOL)alreadyComparedWithFactor:(Factor *)otherFactor;

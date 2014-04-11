@@ -10,7 +10,8 @@
 #import "Decision.h"
 #import "BubbleView.h"
 #import "Database.h"
-#import "ResultAnalysisViewController.h"
+#import "CompResultViewController.h"
+#import "FactorRankingViewController.h"
 
 @interface ResultViewController : UIViewController
 
@@ -26,6 +27,18 @@
 @property UILabel * winner;
 
 @property UIButton * analysisButton;
+
+@property CompResultViewController * compResultView;
+@property FactorRankingViewController * factorRankingView;
+@property UITabBarController * tabBarView;
+
+//AB TESTING
+@property int mode;
+@property UIButton * switchScoringButton;
+@property UIButton * recurseButton;
+@property UIButton * resetButton;
+@property UIButton * convergeButton;
+
 
 -(id)initWithDecision:(Decision *)decision;
 

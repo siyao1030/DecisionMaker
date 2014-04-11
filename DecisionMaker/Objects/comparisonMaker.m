@@ -20,6 +20,8 @@
     return self;
 }
 
+//generate comps:
+//A[i] vs. B[i], extra factor randomly compared with whats left
 -(NSMutableArray *)inputOrderCompsGenerator
 {
     
@@ -38,8 +40,8 @@
     {
         Comparison * comp = [[Comparison alloc]initWithFactorA:A[i] andFactorB:B[i]];
         [comparisons addObject:comp];
-        [[A[i] comparedWith] addObject:B[i]];
-        [[B[i] comparedWith] addObject:A[i]];
+        //[[A[i] comparedWith] addObject:B[i]];
+        //[[B[i] comparedWith] addObject:A[i]];
     }
     
     //compare the factors that are left with randomly chosen factors
@@ -50,14 +52,14 @@
         if (numOfFactorsA < numOfFactorsB)
         {
             comp = [[Comparison alloc]initWithFactorA:A[randomIndex] andFactorB:B[i]];
-            [[A[randomIndex] comparedWith] addObject:A[i]];
-            [[B[i] comparedWith] addObject:A[randomIndex]];
+            //[[A[randomIndex] comparedWith] addObject:B[i]];
+            //[[B[i] comparedWith] addObject:A[randomIndex]];
         }
         else
         {
             comp = [[Comparison alloc]initWithFactorA:A[i] andFactorB:B[randomIndex]];
-            [[A[i] comparedWith] addObject:B[randomIndex]];
-            [[B[randomIndex] comparedWith] addObject:A[i]];
+            //[[A[i] comparedWith] addObject:B[randomIndex]];
+            //[[B[randomIndex] comparedWith] addObject:A[i]];
             
         }
         [comparisons addObject:comp];
@@ -77,7 +79,6 @@
     
     if (A.count == 0 && B.count == 0)
     {
-        //NSLog(@"num of comparisons generated: %d",comparisons.count);
          return comparisons;
     }
     else if (A.count == 0)
@@ -87,8 +88,8 @@
             Factor * factorA = [self generateUniqueRandomFactorforFactor:B[i] inArray:self.choiceA.factors];
             Comparison * comp = [[Comparison alloc]initWithFactorA:factorA andFactorB:B[i]];
             
-            [[factorA comparedWith] addObject:B[i]];
-            [[B[i] comparedWith] addObject:factorA];
+            //[[factorA comparedWith] addObject:B[i]];
+            //[[B[i] comparedWith] addObject:factorA];
             [comparisons addObject:comp];
         }
         return comparisons;
@@ -99,8 +100,8 @@
         {
             Factor * factorB = [self generateUniqueRandomFactorforFactor:A[i] inArray:self.choiceB.factors];
             Comparison * comp = [[Comparison alloc]initWithFactorA:A[i] andFactorB:factorB];
-            [[factorB comparedWith] addObject:A[i]];
-            [[A[i] comparedWith] addObject:factorB];
+            //[[factorB comparedWith] addObject:A[i]];
+            //[[A[i] comparedWith] addObject:factorB];
             [comparisons addObject:comp];
         }
         return comparisons;
@@ -110,15 +111,19 @@
     {
         if ([A[0] alreadyComparedWithFactor:B[0]]== NO) {
             Comparison * comp = [[Comparison alloc]initWithFactorA:A[0] andFactorB:B[0]];
-            [[A[0] comparedWith] addObject:B[0]];
-            [[B[0] comparedWith] addObject:A[0]];
+            //[[A[0] comparedWith] addObject:B[0]];
+            //[[B[0] comparedWith] addObject:A[0]];
             [comparisons addObject:comp];
         }
 
         //recursively generate comparisons,skip repeated ones (***not ideal)
+        //FIXME
+        //when the ordering is the exact same as the first round, no comparisons will be generated, thus no new comps are generated
         [A removeObjectAtIndex:0];
         [B removeObjectAtIndex:0];
         [comparisons addObjectsFromArray:[self inOrderCompsGeneratorWithArrayA:A andArrayB:B]];
+        
+        NSLog(@"%lu",(unsigned long)comparisons.count);
 
         return comparisons;
  
@@ -133,6 +138,7 @@
 {
     int randomIndex = arc4random_uniform(targetFactors.count);
     
+
     while ([factor alreadyComparedWithFactor:targetFactors[randomIndex]]) {
         randomIndex = arc4random_uniform(targetFactors.count);
     }
@@ -177,9 +183,19 @@
             while ([baseFactors[i] alreadyComparedWithFactor:targetFactors[randomIndex]]) {
                 randomIndex = arc4random_uniform(min);
             }
-            Comparison * uniqueComp = [[Comparison alloc]initWithFactorA:baseFactors[i] andFactorB:targetFactors[randomIndex]];
-            [[baseFactors[i] comparedWith] addObject:targetFactors[randomIndex]];
-            [[targetFactors[randomIndex] comparedWith] addObject:baseFactors[i]];
+            
+            Comparison * uniqueComp;
+            if (numOfFactorsA > numOfFactorsB)
+            {
+                 uniqueComp = [[Comparison alloc]initWithFactorA:baseFactors[i] andFactorB:targetFactors[randomIndex]];
+            }
+            else
+            {
+                uniqueComp = [[Comparison alloc]initWithFactorA:targetFactors[randomIndex] andFactorB:baseFactors[i]];
+            }
+           
+            //[[baseFactors[i] comparedWith] addObject:targetFactors[randomIndex]];
+            //[[targetFactors[randomIndex] comparedWith] addObject:baseFactors[i]];
             [comparisons addObject:uniqueComp];
             
         }
@@ -213,6 +229,27 @@
     return [self inOrderCompsGeneratorWithArrayA:A andArrayB:B];
     
 }
+
+
+-(NSMutableArray *)restCompsGenerator
+{
+    NSMutableArray * comparisons = [[NSMutableArray alloc]init];
+    
+    for (Factor * factorA in self.choiceA.factors)
+    {
+        for (Factor * factorB in self.choiceB.factors)
+        {
+            if (![factorA alreadyComparedWithFactor:factorB])
+            {
+                [comparisons addObject:[[Comparison alloc]initWithFactorA:factorA andFactorB:factorB]];
+                //[factorA.comparedWith addObject:factorB];
+                //[factorB.comparedWith addObject:factorA];
+            }
+        }
+    }
+    return comparisons;
+}
+
 
 
 /*

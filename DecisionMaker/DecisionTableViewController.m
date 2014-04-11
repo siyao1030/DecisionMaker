@@ -52,7 +52,6 @@
         {
             int rowid = [Database saveItemWithData:decision];
             decision.rowid = rowid;
-            NSLog(@"saving first time in addDecision: stage: %d, rowid: %d",decision.stage, rowid);
         }
         else
         {
@@ -133,15 +132,16 @@
     
     // Configure the cell...
     Decision *temp = [self.decisions objectAtIndex:indexPath.row];
+    
     [[cell textLabel] setText:temp.title];
     [[cell textLabel] setTextAlignment:NSTextAlignmentRight];
     [[cell textLabel] setFont:[UIFont fontWithName: @"HelveticaNeue-CondensedBold"  size: 25]];
-    [cell setFrame:CGRectMake(0, 0, 100,100)];
+    //[cell setFrame:CGRectMake(0, 0, self.view.frame.size.width,100)];
     [cell setBackgroundColor:bgColor];
     
-    NSLog(@"%d",temp.stage);
-    [[cell imageView] setImage:[UIImage imageNamed:[NSString stringWithFormat:@"stage%d.png",temp.stage]]];
-    [[cell imageView] setFrame:CGRectMake(0, 0, 32, 32)];
+    UIImage * cellImage = [UIImage imageNamed:[NSString stringWithFormat:@"stage%d.png",temp.stage]];
+    [[cell imageView] setImage:cellImage];
+    //[[cell imageView] setFrame:CGRectMake(0, 0, cellImage.size.width, cellImage.size.height)];
     return cell;
     }
 
@@ -161,7 +161,6 @@
         // Delete the row from the data source
         // kind of hacky -> actual rowid in db is # of items - indexpath.row because they table is in the opposite order of db
         //[Database deleteItem:self.decisions.count-indexPath.row-1];
-        NSLog(@"rowid: %d",[[self.decisions objectAtIndex:indexPath.row] rowid]);
         [Database deleteItem:[[self.decisions objectAtIndex:indexPath.row] rowid]];
         self.decisions = [Database fetchAllItems];
         
@@ -177,7 +176,6 @@
 {
     Decision *temp = [self.decisions objectAtIndex:indexPath.row];
     // Navigation logic may go here. Create and push another view controller.
-    NSLog(@"temp's rid: %d", temp.rowid);
 
     
     if (temp.stage == CreateStage)
@@ -194,7 +192,8 @@
         [createView setUpWithDecision:temp];
         [self.navigationController pushViewController:createView animated:NO];
         
-        AddProsConsViewController * prosConsView = [[AddProsConsViewController alloc]initWithNibName:@"AddProsConsViewController" bundle:nil];
+        EnterProsConsViewController * prosConsView = [[EnterProsConsViewController alloc]init];
+        //AddProsConsViewController * prosConsView = [[AddProsConsViewController alloc]initWithNibName:@"AddProsConsViewController" bundle:nil];
         [prosConsView setUpWithDecision:temp];
         [self.navigationController pushViewController:prosConsView animated:YES];
     }
@@ -205,7 +204,8 @@
         [createView setUpWithDecision:temp];
         [self.navigationController pushViewController:createView animated:NO];
         
-        AddProsConsViewController * prosConsView = [[AddProsConsViewController alloc]initWithNibName:@"AddProsConsViewController" bundle:nil];
+        EnterProsConsViewController * prosConsView = [[EnterProsConsViewController alloc]init];
+        //AddProsConsViewController * prosConsView = [[AddProsConsViewController alloc]initWithNibName:@"AddProsConsViewController" bundle:nil];
         [prosConsView setUpWithDecision:temp];
         [self.navigationController pushViewController:prosConsView animated:NO];
         
@@ -219,7 +219,8 @@
         [createView setUpWithDecision:temp];
         [self.navigationController pushViewController:createView animated:NO];
         
-        AddProsConsViewController * prosConsView = [[AddProsConsViewController alloc]initWithNibName:@"AddProsConsViewController" bundle:nil];
+        EnterProsConsViewController * prosConsView = [[EnterProsConsViewController alloc]init];
+        //AddProsConsViewController * prosConsView = [[AddProsConsViewController alloc]initWithNibName:@"AddProsConsViewController" bundle:nil];
         [prosConsView setUpWithDecision:temp];
         [self.navigationController pushViewController:prosConsView animated:NO];
         

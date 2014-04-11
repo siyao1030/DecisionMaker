@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Decision.h"
 #import "AddProsConsViewController.h"
+#import "EnterProsConsViewController.h"
 
 @interface CreateDecisionViewController : UIViewController
 

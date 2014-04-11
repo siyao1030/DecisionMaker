@@ -30,6 +30,8 @@
 
 -(NSMutableArray *)inputOrderCompsGenerator;
 
+-(NSMutableArray *)restCompsGenerator;
+
 //-(Comparison *)singleRandomCompGeneratorWithAArray:(NSMutableArray *)A andBArray:(NSMutableArray *)B;
 
 

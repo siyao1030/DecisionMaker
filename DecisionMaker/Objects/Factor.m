@@ -17,17 +17,22 @@
     self.averageWeight = 0;
     self.weights = [[NSMutableArray alloc] init];
     self.comparedWith = [[NSMutableArray alloc] init];
+    self.score = 10.0;
+    self.totalContribution = 0.0;
+    self.tempScore = 0.0;
     
-    //[self.comparedWith addObject:[NSNumber numberWithInt:1]];
     
     return self;
 }
 
 - (void)resetStats
 {
-    self.averageWeight = 0;
+    self.averageWeight = 0.0;
+    self.totalContribution  = 0.0;
+    self.score = 10.0;
     self.weights = [[NSMutableArray alloc] init];
     self.comparedWith = [[NSMutableArray alloc] init];
+    self.tempScore = 0.0;
     
 }
 - (void)encodeWithCoder:(NSCoder *)aCoder
@@ -36,7 +41,10 @@
     [aCoder encodeObject:self.weights forKey:@"weights"];
     [aCoder encodeObject:self.comparedWith forKey:@"comparedWith"];
     [aCoder encodeFloat:self.averageWeight forKey:@"averageWeight"];
+    [aCoder encodeFloat:self.score forKey:@"score"];
+    [aCoder encodeFloat:self.finalScore forKey:@"finalScore"];
     [aCoder encodeBool:self.isPro forKey:@"isPro"];
+    [aCoder encodeFloat:self.totalContribution forKey:@"totalContribution"];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -47,8 +55,10 @@
         self.weights = [aDecoder decodeObjectForKey:@"weights"];
         self.comparedWith = [aDecoder decodeObjectForKey:@"comparedWith"];
         self.averageWeight = [aDecoder decodeFloatForKey:@"averageWeight"];
+        self.score = [aDecoder decodeFloatForKey:@"score"];
+        self.finalScore = [aDecoder decodeFloatForKey:@"finalScore"];
         self.isPro = [aDecoder decodeBoolForKey:@"isPro"];
-
+        self.totalContribution = [aDecoder decodeFloatForKey:@"totalContribution"];
         
         
     }
@@ -59,10 +69,10 @@
 
 -(BOOL)alreadyComparedWithFactor:(Factor *)otherFactor
 {
-    for (Factor * thisFactor in self.comparedWith)
+    for (NSArray * thisFactor in self.comparedWith)
     {
         //NSLog(@"A has already compared with: %d",i.intValue);
-        if ([thisFactor.title isEqualToString:otherFactor.title])
+        if ([[[thisFactor objectAtIndex:0 ] title] isEqualToString:otherFactor.title])
             return YES;
     }
     return NO;
@@ -70,23 +80,18 @@
 }
 -(void)updateAverageWeight
 {
-    NSNumber *newWIndex = self.weights[self.weights.count-1];
+    //NSNumber *newW = self.weights[self.weights.count-1];
     
-    self.averageWeight = (self.averageWeight * (self.weights.count-1) + newWIndex.doubleValue)/self.weights.count;
+    //self.averageWeight = (self.averageWeight * (self.weights.count-1) + newW.doubleValue)/self.weights.count;
+    int sum = 0;
+    for (NSNumber * weight in self.weights)
+    {
+        sum+=weight.floatValue;
+    }
+    self.averageWeight = sum/self.weights.count;
     
-    NSLog(@"new weight: %f", newWIndex.doubleValue);
-    NSLog(@"average weight: %f", self.averageWeight);
-    /*
-    if (self.isPro)
-    {
-        self.averageWeight = (self.averageWeight * (self.weights.count-1) + newWIndex.doubleValue)/self.weights.count;
-    }
-    else
-    {
-        self.averageWeight = (self.averageWeight * (self.weights.count-1) - newWIndex.doubleValue)/self.weights.count;
-    }
-*/
-}
+    
+  }
 
 - (id)copyWithZone:(NSZone *)zone
 {
@@ -97,6 +102,10 @@
         copy.weights = [self.weights copyWithZone:zone];
         copy.comparedWith = [self.comparedWith copyWithZone:zone];
         copy.averageWeight = self.averageWeight;
+        copy.score = self.score;
+        copy.finalScore = self.finalScore;
+        copy.totalContribution = self.totalContribution;
+        copy.tempScore = self.tempScore;
 
     }
     

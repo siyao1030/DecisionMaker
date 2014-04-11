@@ -26,20 +26,7 @@
     return self;
 }
 
--(void)setUpWithSiza:(int)size andLabel:(NSString *)label andChoice:(int)index andShouldDisplaySize:(BOOL)shouldDisplay
-{
 
-    
-    /*
-    self.label = [[UILabel alloc]init];
-    [self.label setText:label];
-    if (index == 0)
-        [self.label setTextColor:darkGreen];
-    else
-        [self.label setTextColor:darkOrange];
-    */
-    
-}
 
 -(void)setUpWithItemALabel:(NSString *)labelA andASize:(int)sizeA andItemBLabel: (NSString *)labelB andBSize:(int)sizeB andShouldDisplaySize:(BOOL)shouldDisplay
 {
@@ -149,15 +136,30 @@
     
     
     //// Text 1 Drawing
-    CGRect text2Rect = CGRectMake(0, 200-diameterA-39, 321, 39);
+    
+    CGRect text1Rect = CGRectMake(5, 200-diameterA-39, 310, 39);
+
+    UIFont* font = [self getFontForString:self.labelA toFitInRect:text1Rect seedFont:[UIFont systemFontOfSize:30]];
+    text1Rect = CGRectMake(5, 200-diameterA-39+(30-font.pointSize), 310, 39);
+    // code for breaking into two lines
+    //CGSize constraint = CGSizeMake(300,NSUIntegerMax);
+    //CGSize size = [self.labelA sizeWithFont:font constrainedToSize:constraint lineBreakMode:NSLineBreakByWordWrapping];
+
     [darkGreen setFill];
-    [self.labelA drawInRect: text2Rect withFont: [UIFont fontWithName: @"HelveticaNeue-Light" size: 30] lineBreakMode: NSLineBreakByWordWrapping alignment: NSTextAlignmentCenter];
+    //CGRect text1Rect = CGRectMake((320-size.width)/2, 200-diameterA-size.height-7, size.width, size.height);
+    [self.labelA drawInRect: text1Rect withFont: font lineBreakMode: NSLineBreakByWordWrapping alignment: NSTextAlignmentCenter];
     
+    
+    // Construct your label
+
     //// Text 2 Drawing
-    CGRect textRect = CGRectMake(0, 200+diameterB, 321, 39);
-    [darkOrange setFill];
-    [self.labelB drawInRect: textRect withFont: [UIFont fontWithName: @"HelveticaNeue-Light"  size: 30] lineBreakMode: NSLineBreakByWordWrapping alignment: NSTextAlignmentCenter];
+    CGRect text2Rect = CGRectMake(5, 200+diameterB, 310, 39);
+    UIFont* font2 = [self getFontForString:self.labelB toFitInRect:text2Rect seedFont:[UIFont systemFontOfSize:30]];
     
+    [darkOrange setFill];
+    //CGRect text1Rect = CGRectMake((320-size.width)/2, 200-diameterA-size.height-7, size.width, size.height);
+    [self.labelB drawInRect: text2Rect withFont: font2 lineBreakMode: NSLineBreakByWordWrapping alignment: NSTextAlignmentCenter];
+
     
     //// Oval 2 Drawing
     CGRect oval2Rect = CGRectMake(160-diameterB/2, 200, diameterB, diameterB);
@@ -183,5 +185,21 @@
 
 }
 
+
+-(UIFont*)getFontForString:(NSString*)string
+               toFitInRect:(CGRect)rect
+                  seedFont:(UIFont*)seedFont
+{
+    UIFont* returnFont = seedFont;
+    CGSize stringSize = [string sizeWithFont:returnFont];
+    
+    while(stringSize.width > rect.size.width){
+        returnFont = [UIFont systemFontOfSize:returnFont.pointSize -1];
+        NSLog(@"returnFont %f", returnFont.pointSize);
+        stringSize = [string sizeWithFont:returnFont];
+    }
+    
+    return returnFont;
+}
 
 @end

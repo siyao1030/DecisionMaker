@@ -37,10 +37,12 @@
             int rowid = [Database saveItemWithData:self.decision];
             self.decision.rowid = rowid;
         }
-        else
+        else if (self.changeFlag == YES)
         {
+            
+            self.decision.comparisons =[[[ComparisonMaker alloc]initWithDecision:self.decision] inputOrderCompsGenerator];
             [Database replaceItemWithData:self.decision atRow:self.decision.rowid];
-
+            
         }
         
         // Decision table view reload
@@ -138,7 +140,9 @@
     else if (self.choiceAfactors.count > 0 || self.choiceBfactors.count > 0)
         self.decideButton.enabled = YES;
 
-
+    self.changeFlag = NO;
+    
+    
 }
 
 -(UITableView *)makeLeftTableView
@@ -229,6 +233,8 @@
 -(void)choiceAButtonPressed
 {
     [self.view addSubview:self.dimBG];
+    //self.blurredBG = [self captureBlur];
+    //[self.view addSubview:self.blurredBG];
     [self.view addSubview:self.inputField];
     [self.view addSubview:self.isPro];
     [self.view addSubview:self.isCon];
@@ -243,6 +249,8 @@
 {
 
     [self.view addSubview:self.dimBG];
+    //self.blurredBG = [self captureBlur];
+    //[self.view addSubview:self.blurredBG];
     [self.view addSubview:self.inputField];
     [self.view addSubview:self.isPro];
     [self.view addSubview:self.isCon];
@@ -254,6 +262,36 @@
 
     
 }
+
+
+- (UIImageView *) captureBlur {
+    //Get a UIImage from the UIView
+    NSLog(@"blur capture");
+    UIGraphicsBeginImageContext(self.view.bounds.size);
+    [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *viewImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    //Blur the UIImage
+    CIImage *imageToBlur = [CIImage imageWithCGImage:viewImage.CGImage];
+    CIFilter *gaussianBlurFilter = [CIFilter filterWithName: @"CIGaussianBlur"];
+    [gaussianBlurFilter setValue:imageToBlur forKey: @"inputImage"];
+    [gaussianBlurFilter setValue:[NSNumber numberWithFloat: 10] forKey: @"inputRadius"];
+    CIImage *resultImage = [gaussianBlurFilter valueForKey: @"outputImage"];
+    
+    //create UIImage from filtered image
+    UIImage * blurrredImage = [[UIImage alloc] initWithCIImage:resultImage];
+    
+    //Place the UIImage in a UIImageView
+    UIImageView *newView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    newView.image = blurrredImage;
+    
+    //insert blur UIImageView below transparent view inside the blur image container
+    return  newView;
+    //[self.view insertSubview:newView belowSubview:transparentView];
+}
+
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -280,6 +318,7 @@
     [self.isPro removeFromSuperview];
     [self.isCon removeFromSuperview];
     [self.cancelButton removeFromSuperview];
+    //[self.blurredBG removeFromSuperview];
     [self.dimBG removeFromSuperview];
     
     
@@ -292,7 +331,7 @@
     else if (self.choiceAfactors.count > 0 && self.choiceBfactors.count > 0)
         self.decideButton.enabled = YES;
     
-    
+    self.changeFlag = YES;
     return YES;
 }
 
@@ -341,43 +380,62 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     
     // Configure the cell...
+    UIView *spacerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 40)];
+    UITextField * txtField = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, 160, 45)];
+    
+    
+    [txtField setLeftViewMode:UITextFieldViewModeAlways];
+    //txtField.autoresizingMask=UIViewAutoresizingFlexibleHeight;
+    //txtField.autoresizesSubviews=YES;
+    [txtField setBorderStyle:UITextBorderStyleNone];
+    txtField.text = @"";
+    [txtField setBackgroundColor:bgColor];
+    
     Factor *temp;
     if (self.choiceATableView==tableView)
     {
         temp = [self.choiceAfactors objectAtIndex:indexPath.row];
+        txtField.text = temp.title;
   
-        [[cell textLabel] setText:temp.title];
-
         if (temp.isPro)
-            [cell setBackgroundColor:lightGreen];
+            [txtField setBackgroundColor:lightGreen];
         else
-            [cell setBackgroundColor:darkGreen];
+            [txtField setBackgroundColor:darkGreen];
         
-        cell.textLabel.textColor = [UIColor whiteColor];
-        [cell.textLabel setFont:[UIFont fontWithName: @"HelveticaNeue-Bold"  size: 18]];
-        [[cell textLabel] setTextAlignment:NSTextAlignmentRight];
+        txtField.textColor = bgColor;
+        [txtField setFont:[UIFont fontWithName: @"HelveticaNeue-Bold"  size: 18]];
+        [txtField setLeftView:spacerView];
+ 
     }
     else
     {
         [cell.textLabel setTextAlignment:NSTextAlignmentLeft];
         temp = [self.choiceBfactors objectAtIndex:indexPath.row];
-        [[cell textLabel] setText:temp.title];
+        txtField.text = temp.title;
+        //[[cell textLabel] setText:temp.title];
         if (temp.isPro)
-            [cell setBackgroundColor:lightOrange];
-
+            [txtField setBackgroundColor:lightOrange];
         else
-            [cell setBackgroundColor:darkOrange];
+            [txtField setBackgroundColor:darkOrange];
 
+        txtField.textColor = bgColor;
+        [txtField setFont:[UIFont fontWithName: @"HelveticaNeue-Bold"  size: 18]];
+        [txtField setLeftView:spacerView];
+        /*
         cell.textLabel.textColor = [UIColor whiteColor];
         [cell.textLabel setFont:[UIFont fontWithName: @"HelveticaNeue-Bold"  size: 18]];
         //[[cell textLabel] setTextAlignment:NSTextAlignmentLeft];
+         */
     }
-    
+    txtField.text = temp.title;
+    [cell addSubview:txtField];
     if (cell == nil)
         NSLog(@"Cell is nil");
     
     //[[cell imageView] setImage:[[UIImage alloc] initWithData:temp.data]];
     return cell;
+    
+    NSLog(@"im a cell!");
 }
 
 
@@ -400,9 +458,11 @@
          [self.choiceBfactors removeObjectAtIndex:indexPath.row];
      
      [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+     self.changeFlag = YES;
  }
     
  else if (editingStyle == UITableViewCellEditingStyleInsert) {
+     self.changeFlag = YES;
  // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
  }
     
@@ -472,6 +532,8 @@
         [self.choiceATableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
         [self.choiceBTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     }
+    
+    
     // Do any additional setup after loading the view from its nib.
 }
 

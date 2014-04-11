@@ -158,7 +158,9 @@
     [self.target performSelector:self.action withObject:self.decision];
     //[self.navigationController popToRootViewControllerAnimated:YES];
     //[self.navigationController popViewControllerAnimated:YES];
-    AddProsConsViewController *addProsConsView = [[AddProsConsViewController alloc]initWithNibName:@"AddProsConsViewController" bundle:nil];
+    //AddProsConsViewController *addProsConsView = [[AddProsConsViewController alloc]initWithNibName:@"AddProsConsViewController" bundle:nil];
+    
+    EnterProsConsViewController *addProsConsView = [[EnterProsConsViewController alloc]init];
     [self.navigationController pushViewController:addProsConsView animated:YES];
     [addProsConsView setUpWithDecision:self.decision];
     
