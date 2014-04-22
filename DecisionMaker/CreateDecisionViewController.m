@@ -145,20 +145,28 @@
         [self.decisionTitle setText:[NSString stringWithFormat:@"%@%@%@", self.choiceA.text, @" vs. ", self.choiceB.text]];
     }
     
-    Choice * choiceA = [[Choice alloc]initWithTitle:self.choiceA.text];
-    Choice * choiceB = [[Choice alloc]initWithTitle:self.choiceB.text];
-    self.decision = [[Decision alloc]initWithChoiceA:choiceA andChoiceB:choiceB andTitle:self.decisionTitle.text];
+    if (self.decision == NULL)
+    {
+        Choice * choiceA = [[Choice alloc]initWithTitle:self.choiceA.text];
+        Choice * choiceB = [[Choice alloc]initWithTitle:self.choiceB.text];
+        self.decision = [[Decision alloc]initWithChoiceA:choiceA andChoiceB:choiceB andTitle:self.decisionTitle.text];
+        
+        self.decision.stage = ProsConsStage;
+        
+        // what is the rowid here???
+        //adding decision here
+        [self.target performSelector:self.action withObject:self.decision];
+    }
+    else
+    {
+        [self.decision changeTitle:self.decisionTitle.text];
+        [(Choice *)self.decision.choices[0] changeTitle:self.choiceA.text];
+        [(Choice *)self.decision.choices[1] changeTitle:self.choiceB.text];
+        
+        [Database replaceItemWithData:self.decision atRow:self.decision.rowid];
+    }
     
-    self.decision.stage = ProsConsStage;
 
-    
-    
-    // what is the rowid here???
-    
-    [self.target performSelector:self.action withObject:self.decision];
-    //[self.navigationController popToRootViewControllerAnimated:YES];
-    //[self.navigationController popViewControllerAnimated:YES];
-    //AddProsConsViewController *addProsConsView = [[AddProsConsViewController alloc]initWithNibName:@"AddProsConsViewController" bundle:nil];
     
     EnterProsConsViewController *addProsConsView = [[EnterProsConsViewController alloc]init];
     [self.navigationController pushViewController:addProsConsView animated:YES];

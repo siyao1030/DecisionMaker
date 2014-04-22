@@ -69,4 +69,7 @@
 
 - (id)initWithCoder:(NSCoder *)aDecoder;
 
+-(void)changeTitle:(NSString *)title;
+
+
 @end

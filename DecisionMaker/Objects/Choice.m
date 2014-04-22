@@ -41,6 +41,10 @@
     return self;
 }
 
+-(void)changeTitle:(NSString *)title
+{
+    self.title = title;
+}
 
 -(void)addToFactors:(Factor *)factor
 {

@@ -86,6 +86,12 @@
     return self;
 }
 
+
+-(void)changeTitle:(NSString *)title
+{
+    self.title = title;
+}
+
 -(void)updateContributionScore
 {
     NSMutableArray * factorsA = [[self.choices objectAtIndex:0] factors];
