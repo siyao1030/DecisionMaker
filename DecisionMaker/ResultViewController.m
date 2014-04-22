@@ -43,7 +43,7 @@
     
    
     
-    self.bubbles = [[BubbleView alloc]initWithFrame:CGRectMake(0, 60, 320, 400)];
+    self.bubbles = [[BubbleView alloc]initWithFrame:CGRectMake(0, 50, 320, 400)];
 
     Choice * a = self.decision.choices[0];
     Choice * b = self.decision.choices[1];
@@ -66,7 +66,7 @@
     [self.view addSubview:self.bubbles];
     
     
-    self.resultLabel = [[UILabel alloc]initWithFrame:CGRectMake((320-250)/2, 40, 250, 30)];
+    self.resultLabel = [[UILabel alloc]initWithFrame:CGRectMake((320-250)/2, 30, 250, 30)];
     [self.resultLabel setText:@"Your Heart Belongs to"];
     [self.resultLabel setFont:[UIFont fontWithName: @"HelveticaNeue-Light"  size: 22]];
     [self.resultLabel setTextColor:redOpaque];
@@ -76,7 +76,7 @@
     
     
     self.analysisButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.analysisButton setFrame:CGRectMake((self.view.frame.size.width-88)/2, self.view.frame.size.height-140, 88, 40)];
+    [self.analysisButton setFrame:CGRectMake((self.view.frame.size.width-88)/2, self.view.frame.size.height-88-40, 88, 40)];
     [self.analysisButton setTitle:@"See Why" forState:UIControlStateNormal];
     [self.analysisButton.titleLabel setFont:[UIFont fontWithName: @"HelveticaNeue"  size: 20]];
     [self.analysisButton setTintColor:redOpaque];

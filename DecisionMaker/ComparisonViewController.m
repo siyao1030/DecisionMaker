@@ -38,9 +38,17 @@
     NSLog(@"stage when enter comparison view: %d", self.decision.stage);
     //using testing decision
     
+    
     //interfaces
     
-    self.bubbles = [[BubbleView alloc]initWithFrame:CGRectMake(0, 10, 320, 400)];
+    self.instructionlabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 40, 320, 25)];
+    [self.instructionlabel setText:@"Which one do you care more?"];
+    [self.instructionlabel setFont:[UIFont fontWithName: @"HelveticaNeue-Light"  size: 21]];
+    [self.instructionlabel setTextColor:redOpaque];
+    [self.instructionlabel setTextAlignment:NSTextAlignmentCenter];
+    
+    [self.view addSubview:self.instructionlabel];
+    self.bubbles = [[BubbleView alloc]initWithFrame:CGRectMake(0, 65, 320, 400)];
     [self.bubbles setBackgroundColor:bgColor];
     self.bubbles.target = self;
     self.bubbles.increaseA = @selector(increaseFactorA);
@@ -48,12 +56,12 @@
 
     [self.view addSubview:self.bubbles];
     
-    
-    self.choiceALabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 70, 130, 33)];
+    /*
+    self.choiceALabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 130, 130, 33)];
     [self.view addSubview:self.choiceALabel];
-    self.choiceBLabel = [[UILabel alloc]initWithFrame:CGRectMake(170, 70, 130, 33)];
+    self.choiceBLabel = [[UILabel alloc]initWithFrame:CGRectMake(170, 130, 130, 33)];
     [self.view addSubview:self.choiceBLabel];
-    
+    */
     //dont delete yet, need to improve
     /*
     self.prevButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -76,7 +84,7 @@
     UIImage * confirmImage = [UIImage imageNamed:@"confirm.png"];
     self.nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.nextButton setFrame:
-                       CGRectMake((self.view.frame.size.width-confirmImage.size.width)/2, self.view.frame.size.height-confirmImage.size.height-130, confirmImage.size.width, confirmImage.size.height)];
+                       CGRectMake((self.view.frame.size.width-confirmImage.size.width)/2, self.view.frame.size.height-confirmImage.size.height-80, confirmImage.size.width, confirmImage.size.height)];
     [self.nextButton setImage:confirmImage forState:UIControlStateNormal];
     [self.nextButton addTarget:self action:@selector(nextComparison) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.nextButton];

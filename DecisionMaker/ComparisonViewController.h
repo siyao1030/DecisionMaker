@@ -21,6 +21,7 @@
 @property BubbleView * bubbles;
 @property UILabel * choiceALabel;
 @property UILabel * choiceBLabel;
+@property UILabel * instructionlabel;
 
 @property ProgressView * progressView;
 
