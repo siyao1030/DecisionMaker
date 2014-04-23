@@ -289,7 +289,7 @@
 
 
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+- (BOOL)textFieldDidBeginEditing:(UITextField *)textField
 {
     if (self.isPro == nil)
     {
@@ -312,9 +312,8 @@
         
     }
     
+    
     // prepopulate pro con setting with the current factor
-    // problem: current is pro, click on another con, current pro becomes con
-    // because should begin was called before should end
     int foundIndex = [self findIndexinTextFields:self.AtxtFields forTextField:textField];
     if (foundIndex != -1 && foundIndex < self.choiceAfactors.count)
     {
@@ -330,6 +329,7 @@
             self.isCon.selected = !((Factor *)self.choiceBfactors[foundIndex]).isPro;
         }
     }
+    
     
     [self.view addSubview:self.isPro];
     [self.view addSubview:self.isCon];
